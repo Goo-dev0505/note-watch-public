@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>note ウォッチリスト</title>
+<style>
+  :root {
+    --bg:      #0d1117;
+    --surface: #161b22;
+    --border:  #30363d;
+    --text:    #e6edf3;
+    --sub:     #8b949e;
+    --accent:  #41b3a3;
+    --badge:   #1f6feb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .meta {
+    font-size: 0.75rem;
+    color: var(--sub);
+    margin-left: auto;
+  }
+
+  .toolbar {
+    padding: 1rem 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .toolbar input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    outline: none;
+  }
+
+  .toolbar input:focus { border-color: var(--accent); }
+
+  .count {
+    font-size: 0.8rem;
+    color: var(--sub);
+    margin-left: auto;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+
+  .thumb-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--border);
+  }
+
+  .card-body {
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+  }
+
+  .target-badge {
+    font-size: 0.7rem;
+    color: #fff;
+    background: var(--badge);
+    border-radius: 4px;
+    padding: 0.1rem 0.45rem;
+    align-self: flex-start;
+  }
+
+  .card-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--text);
+  }
+
+  .excerpt {
+    font-size: 0.78rem;
+    color: var(--sub);
+    line-height: 1.5;
+  }
+
+  .date {
+    font-size: 0.72rem;
+    color: var(--sub);
+    margin-top: auto;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 4rem;
+    color: var(--sub);
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--sub);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📋 note ウォッチリスト</h1>
+  <span class="meta">更新: 2026-04-01 14:28 JST &nbsp;|&nbsp; 全60件</span>
+</header>
+
+<div class="toolbar">
+  <input type="search" id="search" placeholder="タイトル・ユーザーで絞り込み…" oninput="filterCards()">
+  <span class="count" id="count">60件</span>
+</div>
+
+<div class="grid" id="grid">
+
+        <a class="card" href="https://note.com/ktcrs1107/n/na78164f7ade7" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/263733165/rectangle_large_type_2_d01e646ab6918b4dd20c2e598ba9db03.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">3月の月間ランキング発表｜応援の軌跡を残すアーカイブ｜note運用｜学び｜日記｜日常｜振り返り｜#315</p>
+                <p class="excerpt">3/23に、ワイは「皆の愛を可視化したで」と告知した。
+
+あの記事で書いた通り、やりたかったのは、
+ただのランキングやなかった。
+
+「あの時、たしかに応援してく…</p>
+                <span class="date">2026-04-01</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nca814dd2d8da" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/263430840/rectangle_large_type_2_1275ed31971875e5c40a9987a18c4a94.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">昔のサムネを見返したら、下手さより“その時の熱”が残ってた話｜Gemini｜デザイン｜note運用｜最近の学び｜#314</p>
+                <p class="excerpt">今日は、2025年9月に公開した記事のサムネを、まとめて並べてみる回です。
+
+……と書くと、ただの一覧記事っぽいねんけど、
+最近はこれが思ってたよりちゃんとログ…</p>
+                <span class="date">2026-03-31</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n523dbbb83efb" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/262443906/rectangle_large_type_2_6fe23728008e703d3f3fa7db42ad5084.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">やさしい顔の裏に、設計図がおった話｜創作｜AI活用｜生成AI｜画像生成AI｜#313</p>
+                <p class="excerpt">前回、ワイは
+他人のキャラを自分の世界に混ぜるのはアリか？
+みたいなことを、わりと楽しそうに試してた。
+
+でな。
+
+今回もやった。
+
+というわけで今回は、
+はし…</p>
+                <span class="date">2026-03-30</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n097e5b798056" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/262460207/rectangle_large_type_2_d99a0ec86600b59de3bf7da7efc6abed.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">プロンプト教、構造派に入信した話｜AI活用|生成AI|ChatGPT|note運用|最近の学び|#312</p>
+                <p class="excerpt">プロンプト信者のKITAcore（キタコレ）です。
+
+宗派は、構造派です。
+
+また、変な肩書きが増えました。
+
+この前、職場で言われたんよ。
+
+「キタコレって、…</p>
+                <span class="date">2026-03-29</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n9605484b22ec" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/262493656/rectangle_large_type_2_52503bbb57267b13fd6a90b5ee93f70f.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">何を作ったのかを“雰囲気ごと”受け取る最近の学び｜試行錯誤｜日記｜エッセイ｜capcut｜#311</p>
+                <p class="excerpt">Xで見た人もいると思うけど、やってもうた。
+
+ワイには案件とか来ないので、
+完全に自分の遊びで、
+ちょっと“動くやつ”に手を出してしまった。
+
+動画なのかどうか…</p>
+                <span class="date">2026-03-28</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/ne41b5368282d" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/261342194/rectangle_large_type_2_f6b13e401aa3ce066d802906f05fb3a5.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">「初速は効く」はほんまに頑健なんか？ 4,166本で見直した話|Note運営|データ分析| #310</p>
+                <p class="excerpt">この記事は有料マガジンに格納されてます。
+
+はじめに：このレポートの位置づけ
+
+前に出した分析では、
+「noteって結局、初速が大事なんちゃうか？」
+という話を…</p>
+                <span class="date">2026-03-27</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nace51bade3c8" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/262343128/rectangle_large_type_2_83810b870031cf59e29a45e888c3647b.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">軽いノリで始めた会員証が、気づけば祭りになっていた話｜note運用｜記事｜つながり｜デザイン｜創作｜#309</p>
+                <p class="excerpt">はい。とれました。
+
+正確に言うと、人気をなめてました。
+
+いやほんま、なめてました。
+
+ダルメイ、強い。
+なんやこれ。
+
+完全に漁夫の利のつもりでニヤニヤして…</p>
+                <span class="date">2026-03-27</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n49581ca64d63" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/228858784/rectangle_large_type_2_1171e65420d59792727c82ced4be8f5e.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">検証不足の過去記事を見直して気づいた、プロンプト設計の変化|AI活用｜生成AI｜ChatGPT｜Gemini｜#308</p>
+                <p class="excerpt">今回は、久々にプロンプトエンジニアリング論について記事にしてみた。
+
+ネットで拾ったプロンプト、なんか自分の環境やとズレることない？
+
+ハルシネーション起こした…</p>
+                <span class="date">2026-03-26</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n7b682c6fa0fd" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/261743308/rectangle_large_type_2_529784ef1f9c3d024db3f2cc6d3c4327.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">他人のキャラを自分の世界に混ぜるのはアリか？を遊びながら試した話｜創作｜AI活用｜生成AI｜画像生成AI｜#307</p>
+                <p class="excerpt">前に、ワイの過去作の世界に、
+ほかのクリエイターさんを入れ込んで新しい1枚にする
+そんな“召喚企画”を始めたやん。
+
+でな。
+
+せっかくやるなら、1発目は早い方…</p>
+                <span class="date">2026-03-25</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/na174a3a630f3" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/261525900/rectangle_large_type_2_eeae3f4a2a867a39284b4b743aa20f97.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">5名予定がXX名に。KITAcore召喚企画を5名＋αで続行します｜note｜創作｜AI活用｜生成AI｜#306</p>
+                <p class="excerpt">前に、こんな募集をしてみたんよ。
+覚えてますか？
+ワイは、忘れかけました。
+
+ワイの過去作の世界に、ほかのクリエイターさんを入れ込んで、新しい1枚にするってやつ…</p>
+                <span class="date">2026-03-24</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n07718b48b033" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/261527113/rectangle_large_type_2_3ecd68919fbefea23ca0cea70da97812.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">愛を数値化したら、ちょっと怖くてめちゃくちゃ面白かった｜note運用｜フォロワー｜つながり｜コラム｜#305</p>
+                <p class="excerpt">フォロワー1,000人越えてからやりたかったやつや。
+
+正直ギリギリ間に合ったw
+
+節目越えたで〜〜！！
+
+って流れで、
+応援アーカイブ『SKI RANKING…</p>
+                <span class="date">2026-03-23</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n8da8091b30f1" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/260824885/rectangle_large_type_2_8fb79755e2b725a79d0ef81c2fe05488.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">読まれ方でViewは変わるのか。314文字と383文字で実験してみた結果｜note運営｜記事｜#304</p>
+                <p class="excerpt">前回の実験2の最後に、こう書いた。
+
+今回はその回収や。
+
+まだ実験1・2を読んでない人は、先にそっちから読んでくれると流れが分かりやすい。
+
+1. 今回なにを…</p>
+                <span class="date">2026-03-23</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n334ef1190d54" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/260910746/rectangle_large_type_2_f3473710e86cd0292bf5571c2b9cdf75.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">コラボ企画｜過去作を再利用してクリエイターを召喚する企画｜コラボ創作の新しい形｜画像生成AI｜創作｜実験｜note運用｜#303</p>
+                <p class="excerpt">「あかん、次の本命記事はまだ重たい。
+でも、何か出したい」
+
+創作してると、たまにこの状態になるやろ。
+
+ワイは、なる。
+
+めっちゃなる。
+
+別に完全なネタ切れ…</p>
+                <span class="date">2026-03-22</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n7c0ac8c69fcb" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/260782776/rectangle_large_type_2_88d448ca6e4e653f4938c8ba71bffeff.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">会員証のついでに、FC動画まで作ってもうた話｜ファンクラブ｜ダルメイ｜AI動画｜#302</p>
+                <p class="excerpt">最初は、ほんまに軽いノリやったんよ。
+
+「会員証つくったら、おもろいやん」
+
+それだけやった。
+
+で、番号ふって、非公式やのにそれっぽくして、わちゃわちゃ遊んで…</p>
+                <span class="date">2026-03-21</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n33a65d1f4b95" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/256263772/rectangle_large_type_2_1e0b3476a12fb52127a86b69f1b1e2ef.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">「奇跡の1枚」はいらない。再現できる異常性がほしい｜AIアート｜生成AI｜プロンプト｜#301</p>
+                <p class="excerpt">人×動物ハイブリッド・ポートレートを構造で量産するYAMLテンプレ完全版この記事でできるようになること同じ世界観を保ったまま、動物を差し替えるだけでポートレート…</p>
+                <span class="date">2026-03-21</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n7f472192316e" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/260405412/rectangle_large_type_2_3a11aafff8ee80dd6b11adb21fe04ea3.jpeg?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">noteダッシュボードを“分析画面”から“ハブ”に作り直した話｜note運営｜ダッシュボード｜データ分析｜UXデザイン｜#300</p>
+                <p class="excerpt">前に「眺めたくなる画面にした」って記事を書いた。
+あれからまた、触ってた。
+
+今回は、見た目の話やない。
+“何回も見に来たくなる場所にするにはどうするか” の話…</p>
+                <span class="date">2026-03-20</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n2f90b0f875ae" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/260396766/rectangle_large_type_2_31bdd311da916da8046e5dd2b404be1a.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">備忘録｜発行済み｜ 会員証｜ダルメイ｜#299</p>
+                <p class="excerpt">会員証を発行すると更新していきます。
+いわゆる入会特定。
+コードネームつけたい方は、コメントに希望書いてください。
+
+入会希望者は、こちら▼
+
+会員証のデザイン…</p>
+                <span class="date">2026-03-19</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nb8e8de0aabb8" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/259841547/rectangle_large_type_2_45ba6918bbdc3efc4dbc3f5e48059e31.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">表紙の一枚から写真集をつくれるのか。｜AIアート｜画像生成｜クリエイティブ｜#298</p>
+                <p class="excerpt">みなさん、初めまして。
+文才なき実験屋、プロンプトにーやんこと KITAcore です。
+
+……え？
+こんな書き出し、いらん？
+
+まあまあ、そう言わんといて。
+…</p>
+                <span class="date">2026-03-19</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n8267f9389393" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/259683423/rectangle_large_type_2_33302766cc58433ec3401ec648ddd535.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">月曜に見かけるあの存在を、勝手に推すことにした｜非公認クラブ｜Monday｜ダルメイ｜#297</p>
+                <p class="excerpt">これは、もうやるしかないと思った。
+
+え、何をって？
+
+月曜に流れてくるあのダルメイを、まだ知らんのはもったいない。
+
+……いや、正確に言うと、ワイの中で完全に…</p>
+                <span class="date">2026-03-18</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n165fc3619e8a" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/259357476/rectangle_large_type_2_9db7f4156a1e5f2c0c8fa192fff18623.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">『宇宙珍獣ユル勇者あかね』祭りに乗ったら、創作が暴走した｜AIイラスト｜AIアート｜#296</p>
+                <p class="excerpt">誘われたら、乗るしかない祭りってあるやん
+
+『宇宙珍獣ユル勇者あかね』というキャラクターで、イラスト募集のお祭り企画に誘ってもらった。#宇宙珍獣ユル勇者あかね祭…</p>
+                <span class="date">2026-03-17</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n857e1f752c2e" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/259385102/rectangle_large_type_2_09e4652b0ed3abceb7a7f40373aefddc.jpeg?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">「肩見せて、誘惑しないと」と言われたので、ワイも本気を出してみた。 #295</p>
+                <p class="excerpt">すべては、仲良くさせてもらってる方の投稿から始まった。
+Xで見かけたひと言がこれ。
+
+……ほな、やるしかないやろ。
+
+ということで、ワイも“誘惑”に挑戦してみた…</p>
+                <span class="date">2026-03-16</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nd7e8d8d1f696" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/258956456/rectangle_large_type_2_b7a64e07bbe3fcbfe5dcd5eeaa3bb418.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">コラボしても初日は普通やった。でも翌日が全然ちがう話｜note実験｜#294</p>
+                <p class="excerpt">あの日、OASOBIに参加してなかったら。 
+マーコさんの展示録を書いてなかったら。 
+誰かの創作に触発されて動かなかったら。
+
+たぶんワイは今も、 「コラボっ…</p>
+                <span class="date">2026-03-15</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n5f594f849c4b" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/258557049/rectangle_large_type_2_a684873a9370cdbe42b9d50c12be2a2f.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">noteの「初速スキ」とバズはほんまに関係あるんか？|Note運営|データ分析| #293</p>
+                <p class="excerpt">今回から始めるのは、有料で3部作で届ける note スキ分析シリーズや。
+
+3部作は、こんな感じ。
+
+第1部：初速は本当に効くのか
+
+第2部：その結論はどこまで…</p>
+                <span class="date">2026-03-14</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n07197895a3e9" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/258757111/rectangle_large_type_2_42ec3b00e6fa042f1e588f1f0aac0843.jpeg?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">「群衆で構成された巨大な○○」をもっと自由に作る｜動物・神話生物・シンボル編｜Midjourney｜構造化｜プロンプト| #292</p>
+                <p class="excerpt">前の記事では、
+小人たちが集まることで、手が地形になったり、顔が人格を持ちはじめたりする、そんな「世界が立ち上がる感じ」を並べてみた。
+
+で、今回はその次。
+あ…</p>
+                <span class="date">2026-03-13</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nc050f21065a6" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/258449232/rectangle_large_type_2_81985458a7c40c7155158f87569989f6.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">これは事故か、作品か。｜イラスト｜アート｜生成AI｜#291</p>
+                <p class="excerpt">今日は、何も言わんでくれ。
+
+うまくいかん日もあるんや。
+
+緑どんぐりさんの記事を見て、
+「ほなワイもやってみるか」と思った結果——
+
+🌰と🐕が、思ってたより正…</p>
+                <span class="date">2026-03-13</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nab59db8b2331" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/258271951/rectangle_large_type_2_c9df655aaee911af8374da7f1c7dfc48.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">小人の世界が、やっとつながりはじめた｜AIアート｜AIイラスト｜生成AI｜#290</p>
+                <p class="excerpt">前からずっと、
+小人がうろうろしてる世界みたいなんを作ってみたかったんや。
+
+ただのミニチュアではなくて、
+小さい人らが集まることで、
+地形が世界に見えたり、
+…</p>
+                <span class="date">2026-03-12</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n6293052c90d8" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/258032947/rectangle_large_type_2_1d4597637b025ad81eb3042e84262123.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">noteのViewが伸びる『仕組み』を33記事のログで検証｜フォロワー数は打ち上げ台｜飛距離は記事の設計次第｜#289</p>
+                <p class="excerpt">今回の記事は、前に出した記事の「そこ、ほんまに数字で見たんか？」を回収しにいく詳細版や。
+
+まだ読んでない人は、先にこっちを読んでから来ると流れが分かりやすいし…</p>
+                <span class="date">2026-03-11</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n6a60dcb7331c" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/257523421/rectangle_large_type_2_ef60ce783e54883767b4e87ef365e0c8.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【AIイラスト】記事サムネの振り返り｜2026年2月の制作ログ｜イラスト｜アート｜サムネ｜#288</p>
+                <p class="excerpt">今日は、2026年2月に公開した記事のサムネを並べるだけの記事です。
+
+……いや、「だけ」って言うと軽く見えるんやけど、最近そこそこ画像を褒めてもらえることが増…</p>
+                <span class="date">2026-03-10</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n8a465fd66c5f" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/256168923/rectangle_large_type_2_fa53c53f10f21165297098db27468cf5.jpeg?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">投資家って何者なん？を理解するとIRが、ちょっと面白くなる ｜株式投資｜IR｜#287</p>
+                <p class="excerpt">たぶんこのテーマ、他の人もいっぱい書いてると思う。
+
+しかも、ワイのより分かりやすい記事も、たぶん普通にある。
+
+それは先に言うとくで😂
+
+でもな、今日はワイな…</p>
+                <span class="date">2026-03-09</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/ne42952207820" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/257497368/rectangle_large_type_2_63f4d7fa8a550507bb0ab124d3095e38.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">note運営を“感覚”から“見える化”へ｜GitHub Pagesでダッシュボードを作る｜データ分析｜#286</p>
+                <p class="excerpt">前にワイは、noteのPVとかスキ数をGitHub Actionsで自動収集する方法を記事にした。
+
+で、今回はその次や。
+
+せっかくCSVが毎日たまっていくよ…</p>
+                <span class="date">2026-03-08</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nee2cf5453f61" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/256199327/rectangle_large_type_2_9156dd19853850802060f5be47bf8cba.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">初期の実写を掘り返したら、まだ普通に好きやった｜AIアート｜創作｜ #285</p>
+                <p class="excerpt">今日は、昔つくってそのまま公開してへんかった初期の実写系画像を出していく回です。
+
+……まあ、先に言うとく。
+
+つなぎ記事やw
+
+でもな、こういうつなぎって、意…</p>
+                <span class="date">2026-03-08</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/ne2bb6d38c4e3" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/257286607/rectangle_large_type_2_4e420b686cf1b228d7ced93dca821892.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">Noteの閲覧数・スキ数を自動で収集する方法｜GitHub｜クリエイター支援｜データ分析｜Note運営｜#284</p>
+                <p class="excerpt">はじめに読んでな最初に大事なことだけ言っとくで。
+
+この仕組み、noteの非公式APIを使ってる。
+
+せやから、note側の仕様が変わったら、ある日いきなり動か…</p>
+                <span class="date">2026-03-07</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n0cd6640704fd" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/257067750/rectangle_large_type_2_3c4c1cfa54fac108dc56a553aff811ad.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">noteダッシュボードを“見る画面”から“眺めたくなる画面”にしてみた｜note運営｜データ分析｜#283</p>
+                <p class="excerpt">最近、noteダッシュボードの見た目を弄ってた。
+
+いや、正確に言うと、
+数字を見やすくしたかったというより、
+数字をもうちょいカッコつけて並べたくなった が近…</p>
+                <span class="date">2026-03-07</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nb1ad629c3521" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/256665145/rectangle_large_type_2_3a7846e3e051a4b98e73b3a7e08e528e.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">note記事のPVとスキをデータ分析して見えたこと|人・仕掛け・フォロワーが届き方を変える|分析|データ| note運用|AI活用|生成AI #282</p>
+                <p class="excerpt">前にワイは、
+「noteで何をすると、記事の届き方が変わるんや？」
+というテーマで、実験の設計図みたいな記事を書いた。
+
+あのとき見ようとしていたのは、主にこの…</p>
+                <span class="date">2026-03-06</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n155066063025" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/256142385/rectangle_large_type_2_3168595acff4b70fabc001b8945e1e0f.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">ワイが裏で仕掛けてたnote実験、まとめて白状しとく。 #281</p>
+                <p class="excerpt">まずは、ワイの最近の実験に付き合ってくれたクリエイターさんに、ちゃんと感謝させてや。
+
+しょーもなかったかもしれん記事を読んでくれて、ほんまにありがとう。
+
+し…</p>
+                <span class="date">2026-03-05</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/ndbabcde3c6c7" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/256069460/rectangle_large_type_2_662d332a6ccddfc7a32b1f2f11450269.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">AIアート｜過去のサムネをリライト #280</p>
+                <p class="excerpt">今回は、AIイラストを始めたばかりの頃につくったサムネを、いまの自分の目線でリライトしてみようと思う。
+
+そう。
+これは執筆の繋ぎや。
+
+……と言いたいところや…</p>
+                <span class="date">2026-03-04</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nf5a0605f6804" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/255990205/rectangle_large_type_2_587176ceb72dc6f04e8f8daa1fa3abd5.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">誰かの創作に火をつけられて、自分も動画を作っていた #279</p>
+                <p class="excerpt">ねんころさんにつられて、ワイも動画を作ってしまった。
+
+いや、正確には「作ってしまった」というより、
+遊び心を起動されて、そのままGrokに突っ込んだ、が正しい…</p>
+                <span class="date">2026-03-03</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n1a488193c9f5" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/255731795/rectangle_large_type_2_d9ef1f6445597afab8cfbc55641e32de.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">ソーメン専門店で理解する、やさしいIRの入口 #278</p>
+                <p class="excerpt">これは“数字アレルギー”の人を、ソーメンで救う話です。
+けど、救済率は未検証w
+
+前回の記事は、ぶっちゃけちょっと投稿前に注意されたんや。
+「優しくない」ってｗ…</p>
+                <span class="date">2026-03-02</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n7c537e680f56" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/255108640/rectangle_large_type_2_01aee3afdb5f321bfba6f6f4bae30c54.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【383文字の実験】Noteのアルゴリズムをハックしたい。 #277</p>
+                <p class="excerpt">文字数は、383文字。
+
+P（結論）： 読了率は、noteのレコメンドアルゴリズムを支配する最重要指標やという噂。
+
+…</p>
+                <span class="date">2026-03-01</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n3a0830e2cc64" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/255060068/rectangle_large_type_2_d0fab86d46a050c4c66deaf8a118d3a5.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">あの314文字の記事が、ちゃんと実験になった話 #276</p>
+                <p class="excerpt">今日は、お礼です。
+
+……いや、ただのお礼ではないな。
+実験の共犯者への報告書みたいなやつ。
+
+この前のあの記事。
+正直、ワイは「まぁ、せいぜい変な記事で終わる…</p>
+                <span class="date">2026-02-28</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/ndda6aa6d3fb1" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/254546936/rectangle_large_type_2_bd7a41d2db3c6d508bf3f0ad3f0f497a.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">IRを読むと、裏側の配管が見える！？（noteで遊ぶコスト構造） #275</p>
+                <p class="excerpt">これは不安を煽る記事ちゃうで。
+IRを材料に「どう読むと構造が見えるか」を残す検証ログや。
+
+財務省がnoteに公式アカウントを開設した。
+コメント欄を閉じた運…</p>
+                <span class="date">2026-02-27</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nee997e61457a" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/254367755/rectangle_large_type_2_3430c6f58fc9f17a86fbeab610158049.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【314文字の実験】Noteのアルゴリズムをハックしたい。 #274</p>
+                <p class="excerpt">文字数は、314文字。
+
+P（結論）： 読了率は、noteのレコメンドアルゴリズムを支配する最重要指標やという噂。
+
+R（理由）： もしそうなら、数秒で読み終わ…</p>
+                <span class="date">2026-02-26</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/ncfabab6d1e2b" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/253047127/rectangle_large_type_2_5958f965e2bca51e2f29db548d655019.jpeg?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">寝てもスッキリせん人へ：朝の光と朝食が効く理由 #273</p>
+                <p class="excerpt">みなさん初めまして。文才なき実験屋、プロンプトにーやんこと KITAcore です。
+
+今回は、昔の「もう読まれなくなった記事」を リライト再掲してみた。
+リラ…</p>
+                <span class="date">2026-02-25</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nae95b4013622" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/253988900/rectangle_large_type_2_056c22a6d8a416c6ab5c4cd5c30cd6f7.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">AIアート｜コラボ｜覗いたら終わる。マーコ展示録（火野枝馬子） #272</p>
+                <p class="excerpt">みなさん初めまして。
+文才なき実験屋、プロンプトにーやんこと KITAcore です。
+
+今日の記事は、ここから始まったんや。
+
+全ての始まり。
+そう、はんくさ…</p>
+                <span class="date">2026-02-24</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n1d32162cd219" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/254059907/rectangle_large_type_2_829948ea62e9c621028b6179f3acf1a5.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【ロジック解説】データ構造から逆算したnoteタグ戦略の深淵 #271</p>
+                <p class="excerpt">この記事は、先日公開した「タグ設計術」の背後にある論理（ロジック） を、一切の忖度なしに解説するもんや。
+
+正直に言うわ。 
+ここから先は、初心者には全く優しく…</p>
+                <span class="date">2026-02-24</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nbe6ef7fc6e07" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/253772682/rectangle_large_type_2_ec9a90c9a5ce88915231e6609cc0327a.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">OASOBI第7回・後日談｜同じワードで、世界線がいっぱい生えた件 #270</p>
+                <p class="excerpt">公開日（2026/2/20）に投稿して、ひと息ついてから参加者さんの作品を巡回した。
+
+で、結論だけ先に言う。
+
+同じ素材（ワード）渡しても、出来上がる料理が全…</p>
+                <span class="date">2026-02-23</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nfe531191f233" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/253546599/rectangle_large_type_2_a73f42cff1f91e11a6a6003ccb12c56c.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">「ハッシュタグ」はデータで選べ。フォロワー外に届けるための“新・タグ設計術” #269</p>
+                <p class="excerpt">「なんとなく」でタグを付けてへん？
+
+ワイも、最初は、適当につけてたし、色々とタグはどうすべきかを悩んでたんや。
+
+ちょっとしたきっかけで、数万件のタグデータを…</p>
+                <span class="date">2026-02-22</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n5f991f7606e9" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/252522484/rectangle_large_type_2_7f08fe4912a994fafed7fc3aafcba962.jpeg?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【詳細版】Platformは、なぜ推しのアルゴリズムを公開したのか。 #268</p>
+                <p class="excerpt">この記事は、簡易版で書いた記事の詳細版。
+興味があれば、ぜひ読んでみてほしい。
+
+ここ数週間、背筋が伸びるような感覚を覚えた。 
+プラットフォーム（PF）が、お…</p>
+                <span class="date">2026-02-21</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nb22642a2ee59" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/252514169/rectangle_large_type_2_71c2e8ef16b6c14a53f3d30f301bdb9d.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【簡易版】Platformは、なぜ推しのアルゴリズムを公開したのか。 #267</p>
+                <p class="excerpt">この数週間、背筋が伸びるような感覚を覚えた。
+
+プラットフォームが「おすすめ（推し）」の基準を、言葉にして公開し始めたからや。
+
+2026年1月、X（旧Twit…</p>
+                <span class="date">2026-02-21</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/ndcf74df8e26d" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/251868200/rectangle_large_type_2_2811917464d0d8e6f2bf8ad464920ecc.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【AIアート/イラスト】7th OASOBI企画 ＃266</p>
+                <p class="excerpt">この世界には、「他人の頭の中」 を素材にして遊ぶ企画がある。
+
+名前は OASOBI。
+
+やることはシンプル。
+
+みんなでキーワードを持ち寄って、最低3つ（…っ…</p>
+                <span class="date">2026-02-20</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n9d3ab3287016" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/252817437/rectangle_large_type_2_2edc24a2e26a311c90edde5a1d0845f4.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">企業アカのnote、正直“教科書”になるんちゃうん？｜キリン公式の設計図を解剖してみた #265</p>
+                <p class="excerpt">企業アカウントのnoteって、どんなこと書いてるんやろ？
+
+気になって夜も眠れんようになったから、研究心だけで覗きに行ってきたわ。
+
+最初にお断り
+
+案件でもP…</p>
+                <span class="date">2026-02-19</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nea4a6e7d7e7e" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/252371754/rectangle_large_type_2_31ee8580219a1256cff6ce13e9d68050.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">V8来るで。Midjourneyが「審美眼貸して」って言うてきた #264</p>
+                <p class="excerpt">自他ともに認める”文才なき実験屋”、KITAcoreです。
+
+Midjourney使ってるみんな、公式から 「V8の仕上げ、ちょっと手伝ってくれへん？」 って来…</p>
+                <span class="date">2026-02-19</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n431998ad8a2f" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/252530049/rectangle_large_type_2_ca13e7d98e483feb2ba6741ede60d647.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">AIを「予約」する時代が来た！？GeminiのScheduled Actions攻略 #263</p>
+                <p class="excerpt">※本記事の仕様・条件は、Google公式ヘルプに基づき 2026年2月時点で整理しています。
+
+たまたま見つけてしまったこの機能を見つけたのは、ほんまタマタマや…</p>
+                <span class="date">2026-02-18</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n9f271d5f24b1" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/252123900/rectangle_large_type_2_21e5fea0c6ba2c202ca3f986ae535014.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">Note運営｜ビュー数とスキで見る“成長の品質”｜毎日ログの4象限 #262</p>
+                <p class="excerpt">この記事で持って帰れるのは、この考え方（これは攻略法じゃなくて“自己診断ツール”）。
+
+ほないくで！
+
+ワイは、毎日「ビュー」と「スキ」をスプレッドシートにログ…</p>
+                <span class="date">2026-02-17</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n05348e338123" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/251957684/rectangle_large_type_2_d36358ec01f6bf2c02a6017a05706d29.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">OASOBI第7回|参加表明|文字の中にみんなを住まわせた|OとIは敵｜2/20公開 #261</p>
+                <p class="excerpt">noteの世界に、ふわっと広がるハッシュタグがある。
+その名も 「 #OASOBI 」。
+
+イラストだけじゃなく、音楽・小説・動画・エッセイ…それぞれ得意分野で…</p>
+                <span class="date">2026-02-16</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n0f919ece03f2" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/251184082/rectangle_large_type_2_a058fead623f761effc653169ac0c190.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【自己紹介】データ×生成AIで遊ぶログプレイヤー｜note運営｜プロンプト設計｜はじめてのnote｜自己紹介 #260</p>
+                <p class="excerpt">はじめまして、KITAcore（キタコレ）です。
+タイトルとサムネは、色々とツッコミどころあると思うw
+けども、それも楽しんでなw
+
+前回の自己紹介から、だいぶ…</p>
+                <span class="date">2026-02-15</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n236b3352fde3" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/250957334/rectangle_large_type_2_7bb58b38259675d1598324ecac4d3b6b.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">noteが“推したい記事”を公開情報から逆算してみた #259</p>
+                <p class="excerpt">この記事の概要
+
+公開情報から推察される「noteが応援したい記事」の条件がわかる
+
+“ハック（数字稼ぎ）”じゃなく、一次情報×構造化で長期露出を取りにいく考え…</p>
+                <span class="date">2026-02-14</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/n1cb447965e43" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/251389885/rectangle_large_type_2_d7e95de1becf154226a5ce65c53300b2.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【プロンプトエンジニアリング】プロンプト順序が生成結果に与える影響｜観測ログと構造化テンプレ #258</p>
+                <p class="excerpt">とんでもないテクニックを知ってしもてな。
+それを忘却せんように構造化したんが、今回の記事や。
+
+何かというと、画像生成を作っていたら、「生成できません」って言わ…</p>
+                <span class="date">2026-02-13</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/neb02f3c0d51c" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/250809688/rectangle_large_type_2_6798ce2d4955b7d2acfb5e9e0c20eb90.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">【AIアート/イラスト】ガソリンスタンドからなにか生み出せるのか。 #257</p>
+                <p class="excerpt">とある記事で、名指しされたんよ。
+
+「ガソリンスタンド縛りで、なんか作って」ってやつ。（意訳済）
+
+企画主さんがまた、プロンプトの抜け道探しが上手すぎて、ワイは…</p>
+                <span class="date">2026-02-13</span>
+            </div>
+        </a>
+        <a class="card" href="https://note.com/ktcrs1107/n/nd946a5f905a2" target="_blank" rel="noopener">
+            <img class="thumb" src="https://assets.st-note.com/production/uploads/images/229070544/rectangle_large_type_2_28227dcc1ac86c4585ababdf63962ae6.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+            <div class="card-body">
+                <span class="target-badge">にーさん</span>
+                <p class="card-title">KITAcoreのAI×思考ログへようこそ — プロンプト設計、アート、そして人生のログプレイ #116</p>
+                <p class="excerpt">はじめまして、KITAcoreです。
+AIと人間のあいだの薄い膜みたいな場所で、思考を遊ばせながら、世界をログ化している人です。
+
+ありがたいことに、見てくれる…</p>
+                <span class="date">2025-11-13</span>
+            </div>
+        </a>
+</div>
+<div class="empty" id="empty">該当する記事がありません</div>
+
+<footer>
+  note Watch Tool — 個人用・非公開管理データは含みません
+</footer>
+
+<script>
+function filterCards() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const cards = document.querySelectorAll('.card');
+  let visible = 0;
+  cards.forEach(card => {
+    const match = card.textContent.toLowerCase().includes(q);
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.getElementById('count').textContent = visible + '件';
+  document.getElementById('empty').style.display = visible === 0 ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

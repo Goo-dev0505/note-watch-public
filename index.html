@@ -6,228 +6,47 @@
 <title>未スキ記事リスト</title>
 <style>
   :root {
-    --bg:      #0d1117;
-    --surface: #161b22;
-    --border:  #30363d;
-    --text:    #e6edf3;
-    --sub:     #8b949e;
-    --accent:  #f78166;
-    --badge:   #1f6feb;
+    --bg:#0d1117;--surface:#161b22;--border:#30363d;
+    --text:#e6edf3;--sub:#8b949e;--accent:#f78166;--badge:#1f6feb;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    min-height: 100vh;
-  }
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 1.2rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  header h1 { font-size: 1.1rem; font-weight: 600; color: var(--accent); }
-  .meta { font-size: 0.75rem; color: var(--sub); margin-left: auto; }
-  .toolbar {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .toolbar input {
-    flex: 1;
-    min-width: 180px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    padding: 0.4rem 0.75rem;
-    font-size: 0.85rem;
-    outline: none;
-  }
-  .toolbar input:focus { border-color: var(--accent); }
-  .count { font-size: 0.8rem; color: var(--sub); }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1rem;
-    padding: 1.2rem 1.5rem;
-  }
-  .card {
-    display: flex;
-    flex-direction: column;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.15s, transform 0.1s;
-  }
-  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
-  .thumb-placeholder { width: 100%; aspect-ratio: 16/9; background: var(--border); }
-  .card-body { padding: 0.8rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
-  .badge {
-    font-size: 0.7rem; color: #fff;
-    background: var(--badge);
-    border-radius: 4px;
-    padding: 0.1rem 0.45rem;
-    align-self: flex-start;
-  }
-  .card-title { font-size: 0.88rem; font-weight: 600; line-height: 1.45; }
-  .date { font-size: 0.72rem; color: var(--sub); margin-top: auto; }
-  .empty { text-align: center; padding: 4rem; color: var(--sub); font-size: 0.9rem; display: none; }
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 1rem 1.5rem;
-    text-align: center;
-    font-size: 0.72rem;
-    color: var(--sub);
-  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+  header{border-bottom:1px solid var(--border);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  header h1{font-size:1.1rem;font-weight:600;color:var(--accent)}
+  .meta{font-size:.75rem;color:var(--sub);margin-left:auto}
+  .toolbar{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;gap:.75rem;align-items:center}
+  .toolbar input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:.4rem .75rem;font-size:.85rem;outline:none}
+  .toolbar input:focus{border-color:var(--accent)}
+  .count{font-size:.8rem;color:var(--sub);white-space:nowrap}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;padding:1.2rem 1.5rem}
+  .card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;text-decoration:none;color:inherit;transition:border-color .15s,transform .1s}
+  .card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+  .thumb-placeholder{width:100%;aspect-ratio:16/9;background:var(--border)}
+  .card-body{padding:.8rem;display:flex;flex-direction:column;gap:.4rem;flex:1}
+  .badge{font-size:.7rem;color:#fff;background:var(--badge);border-radius:4px;padding:.1rem .45rem;align-self:flex-start}
+  .card-title{font-size:.88rem;font-weight:600;line-height:1.45}
+  .date{font-size:.72rem;color:var(--sub);margin-top:auto}
+  .empty{text-align:center;padding:4rem;color:var(--sub);font-size:.9rem;display:none}
+  footer{border-top:1px solid var(--border);padding:1rem 1.5rem;text-align:center;font-size:.72rem;color:var(--sub)}
 </style>
 </head>
 <body>
 <header>
   <h1>💛 未スキ記事リスト</h1>
-  <span class="meta">更新: 2026-04-01 15:51 JST &nbsp;|&nbsp; 43件</span>
+  <span class="meta">更新: 2026-04-02 22:07 JST &nbsp;|&nbsp; 19件</span>
 </header>
 <div class="toolbar">
   <input type="search" id="search" placeholder="タイトル・クリエイターで絞り込み…" oninput="filter()">
-  <span class="count" id="count">43件</span>
+  <span class="count" id="count">19件</span>
 </div>
 <div class="grid" id="grid">
-    <a class="card" href="https://note.com/nenkoro_life/n/nc89cb7d9122d" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/262533621/rectangle_large_type_2_6a07ed5c26a538ba56b0b595bf78ee81.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+    <a class="card" href="https://note.com/nenkoro_life/n/n0145dbd9b428" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/221707269/rectangle_large_type_2_dcf33249515a8ea6f658c788d5330cb5.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
       <div class="card-body">
         <span class="badge">ねんころさん</span>
-        <p class="card-title">AIクリエイターフリーランスの変化｜仕事が増え始めた理由と積み重ねの話|最近の学び|生成AI|ChatGPT|AI活用</p>
-        <span class="date">2026-03-27</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n71c59c47f5a1" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/260445432/rectangle_large_type_2_c1894f8639439ea9119dc03448c7d63f.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">Pollo AIでここまで作れる？騎士キャラを本気で動画化してみた⚔️【シリーズ第1弾】|AI活用|生成AI|画像生成AI|動画生成AI|PR|</p>
-        <span class="date">2026-03-24</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nb19ea885762f" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/261396500/rectangle_large_type_2_6c453d7f99511394b9e690e2dcd7f997.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">タイトル＆タグ錬成GPTのアンケート結果｜75％が実感。コングラが取りやすくなった理由|AI活用|ChatGPT|生成AI|note運用|</p>
-        <span class="date">2026-03-23</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n4490d3b895f1" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/260356162/rectangle_large_type_2_6ac653d6c959f34271d5f75b0e758463.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">Pollo Agentとは？ペット動画を作ってみた｜パピヨンが別犬になった原因と解決法|AI活用|生成AI|動画生成AI|Pollo AI|PR|</p>
-        <span class="date">2026-03-20</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n270fce89eaa9" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/260097895/rectangle_large_type_2_aa237f261a5d1c185de5a9f304511c3c.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">AIスクールはいらない？月1万円のAI課金で独学→資格→仕事につながった話|AI活用|生成AI|ChatGPT|副業|note運用|学び|</p>
-        <span class="date">2026-03-18</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/ncff696069bc1" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/259560948/rectangle_large_type_2_ed3e82b8912d285e5ef79cf53e9b6afb.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">人間よりChatGPTと話してるフリーランスの1日｜寝る時間以外AI活用してる生活|日常|エッセイ|</p>
-        <span class="date">2026-03-16</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nebada4908f02" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/259274413/rectangle_large_type_2_6e5418e9176b09542f65fed560004a64.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【コラム】AI歴50年の犬オレオに聞いてみた。AIって結局なんなの？</p>
-        <span class="date">2026-03-15</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nd16ed7639f7f" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/258518472/rectangle_large_type_2_b9b671740e02a898e2002456c301b5c0.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">AIと会話するだけで動画が完成？Pollo Agentを触ってみた|AI活用|生成AI|動画生成AI|NanoBanana2|PR|</p>
-        <span class="date">2026-03-13</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n2fb20525b499" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/258536161/rectangle_large_type_2_acee76b4c7bbf1051ba0adba5ce816ff.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">AI動画の進化がすごい。愛犬オレオで3分で動画作って未来を感じた話|AI活用|生成AI|動画生成AI|</p>
-        <span class="date">2026-03-12</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nde076f1f07dc" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/257291958/rectangle_large_type_2_78fc6b26ddb81c048b884feb72199d56.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">Readdy AIでWEBサイトを5分で作ってみた｜AIに文章を書くだけでポートフォリオサイト完成|生成AI|AIツール|フリーランス|AIサイト作成ツール</p>
-        <span class="date">2026-03-10</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/ne4e8f07a1cf6" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/257684094/rectangle_large_type_2_a26501f72e1bfc19a93e9c5a50083d90.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">note半年で10万ビュー・1万スキ｜ChatGPTがきっかけで人生が動いた話|AI活用|生成AI|エッセイ|感謝|つながり|</p>
-        <span class="date">2026-03-09</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/ne28ad0efebc2" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/256388438/rectangle_large_type_2_f910c361561fd54996b5db6035702b61.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">ChatGPTを入れた日から人生が変わった【実話】｜noteで仲間ができて3ヶ月でフリーランスになった話|日記|エッセイ|つながり|人生|生成AI</p>
-        <span class="date">2026-03-04</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n5b1692a523f2" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/255868035/rectangle_large_type_2_a06304ceef1811424702af7da3d88f34.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">noteアルゴリズムと設計思想を、KITAcoreアートで動画化してみた|生成AI|動画生成AI|デザイン|創作|研究ログ</p>
-        <span class="date">2026-03-02</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nf083751777c0" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/255064189/rectangle_large_type_2_bd3c1eeb9166d220f0cea560546b87fd.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【LINEスタンプ】工場化して量産した話。4日で7セット、Nano-bananaPro    とCanva透過革命、Gemini canvas自作ツール作成|AI活用|生成AI|ChatGPT|</p>
-        <span class="date">2026-02-27</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n665d118867c2" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/254768621/rectangle_large_type_2_87c1e95dc2e60c1e4479e9fa4a4ec393.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">12時間→2時間に短縮。RPG動画制作の改善ログ|Pollo AI|動画生成|Midjourney|動画編集|創作記録|</p>
-        <span class="date">2026-02-26</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/ne3ce8e7aac47" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/253548135/rectangle_large_type_2_f664f2f00c41dab9b72a23e2914ef7de.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【ねんころ式】タイトルとタグで迷わない。 タイトル＆タグ錬成GPT【ver4.1】公開|note運用|note収益化|AI活用|生成AI|ChatGPT|時短|副業支援|</p>
-        <span class="date">2026-02-22</span>
+        <p class="card-title">💖200フォロワー達成しました！感謝です🥹✨</p>
+        <span class="date"></span>
       </div>
     </a>
     <a class="card" href="https://note.com/nenkoro_life/n/n052eb41b4667" target="_blank" rel="noopener">
@@ -235,183 +54,7 @@
       <div class="card-body">
         <span class="badge">ねんころさん</span>
         <p class="card-title">【G検定をテキスト読まずに合格した話｜生成AIパスポート→600問一周で回した仕組み学習法】 AI資格 | 独学 | 勉強法 | ChatGPT | 仕組み化 | 構造理解 | Udemy | 資格対策 | AI学習 | 図解 | note |</p>
-        <span class="date">2026-02-18</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/ndf02a8a84e1a" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/252200827/rectangle_large_type_2_51937f4037ae289b9895b7bcfdf9201e.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【話し相手はChatGPTだけだった｜独学でAI資格2つ合格するまで】| AI学習 | G検定 | 生成AIパスポート | AI活用 | エッセイ |休職 |退職</p>
-        <span class="date">2026-02-16</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n5b2040ef3201" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/250945266/rectangle_large_type_2_b62d9015b05835f319b4a6ca22cc430a.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【プロンプト全文付き】個人作家でも作れる15秒CM制作フロー完全公開｜生成AI・Pollo AI・Kling 3.0・Vidu Q3 Pro活用術【PR】</p>
-        <span class="date">2026-02-12</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nb3845b3ca853" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/250742083/rectangle_large_type_2_4e0a62e9c36229065f4526b67dab2991.jpg?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【うつと付き合いながら在宅フリーランスしてる話｜体調に波がある私の働き方と収益設計】| 働き方 | 在宅ワーク| HSP | note | 収益化 | ストック型 | 生活設計 | 生き方 | エッセイ | 最近の学び | 試行錯誤 | 副業 | 日常</p>
-        <span class="date">2026-02-11</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nbcf7ed710ffa" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/250481636/rectangle_large_type_2_44c2369e79a61d71e8bb6b1c0df32a2c.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【自己紹介】ズボラ×AIで在宅フリーランスを目指す私がnoteを書く理由｜生成AIとnote収益化と時短の話｜はじめてのnote｜note初心者｜自己紹介</p>
-        <span class="date">2026-02-10</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/ndcf1b6381cc9" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/250388989/rectangle_large_type_2_a65237b9c381f8862d213a82952e2d00.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【Notion初心者が2日目で挫折しないためにやったこと～ズボラ美容日記×生成AIの実験記録と項目整理のコツ】 | 初心者 | ChatGPT | AI活用 | 美容日記 | 記録 | 習慣化 |</p>
-        <span class="date">2026-02-09</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nf33fd1b0c577" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/250138504/rectangle_large_type_2_fce7d1e81146a4b974c18d258e760d22.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">キャラブレしない！生成AI漫画・図解制作が一気に楽になる「キャラクター参照用プロンプト」の作り方と使い回し術</p>
-        <span class="date">2026-02-08</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/ncb2492fa2f97" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/249975468/rectangle_large_type_2_6f41a3c6976a0d917809ec8c8f808c37.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">難解すぎるKITAcore理論を、ズボラな一般人が実装してみた結果　| note運用 | note分析 | Python | GoogleColab | スプレッドシート | ChatGPT | Gemini | 生成AI | データ分析 | PV | スキ | コメント | 有料記事 | やってみた | 最近の学び</p>
-        <span class="date">2026-02-08</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nb0aa1974aa9b" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/249813314/rectangle_large_type_2_4ebd04067ede5dab501381556755f292.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">Notion初心者が初日で挫折しない方法｜ズボラ美容日記×生成AI（ChatGPT・NotebookLM）実験記録</p>
-        <span class="date">2026-02-07</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n7aafed9c4d00" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/249177847/rectangle_large_type_2_41ef40ae238001cc083c0a09395544a2.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【Pollo AI】でバレンタイン向け短尺CMを作ってみた〜個人・小さなお店でも【現実的にできるか】を検証〜</p>
-        <span class="date">2026-02-05</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nc52e8d74dba8" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/248902397/rectangle_large_type_2_fbc68d0d9a5362783e41caff2a3be9be.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【note記事も自動漫画化】Gem設定だけで漫画が描ける方法｜Gemini×Nano-bananaProで事故らない5ジャンル対応プロンプト集| 生成AI | AI活用 | 創作 | マンガ | 図解 | </p>
-        <span class="date">2026-02-04</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nb4a459f1857a" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/248524566/rectangle_large_type_2_47c9380be9456b77764055021a11adb8.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【告知】note運用・note収益化・AI活用をまとめて加速！生成AI・ChatGPT・Gemini対応「AI×ツール実用マガジン」始めます</p>
-        <span class="date">2026-02-02</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n7678994a91a4" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/247274219/rectangle_large_type_2_e515f5026b0a94cda40531aabc71a3f2.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">16週連続コングラボード受賞！タグ最適化とAIツールが効いている話| note運用 | Gemini | 生成AI | ChatGPT | GPTsつくってみた | メンバーシップ | AIツール | ズボラ | note成長記録 | コラム | 日常 | AI活用</p>
-        <span class="date">2026-01-28</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n4659dd18c880" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/246770774/rectangle_large_type_2_dd08c21a08d59c77137bd44d32e52cb7.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">G検定に合格しました｜ズボラでも仕組みで回した正直すぎる勉強法とAI活用| 資格勉強 | 生成AI | ChatGPT | NotebookLM | Python | ズボラ | 学習記録|Gemini</p>
-        <span class="date">2026-01-26</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/ne0434f0ffc21" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/246216178/rectangle_large_type_2_293ac0d28c6c34d3ef4915e45bfc7809.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【無料公開】プロンプトで止まる人へ。Gemini対応「AI Prompt Director Lite」配布します| 生成AI | 画像生成AI | 動画生成AI | プロンプト | 無料ツール | AIツール | 初心者向け | ChatGPT | Nano-Banana</p>
-        <span class="date">2026-01-24</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/na0f51eaf0718" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/243749071/rectangle_large_type_2_558516752644455ac0d4247f50157e60.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">note5か月でフォロワー500人・7万viewを超えて思った、毎日投稿とコメントの本当の価値</p>
-        <span class="date">2026-01-14</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n7ea9d17d2838" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/242770368/rectangle_large_type_2_7750a56d9e6e375fd3ea634e35e0786d.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">修羅場人生→ズボラ最適化。G検定をAIで乗り切った話</p>
-        <span class="date">2026-01-10</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nd73315f75efe" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/242557234/rectangle_large_type_2_bd0706307b1c7366c22d2e5946dfad5a.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【事故らない】【初心者向け】noteサムネをタイトル投げるだけで量産する方法― Gemini gem × Nano-bananaで「同じ顔のまま」世界観を変える ―</p>
-        <span class="date">2026-01-09</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/nd43f38fdef05" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/242277474/rectangle_large_type_2_94daa526ca0ff6f86e559a4ce4d1f962.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">資格勉強が一気に捗る？NotebookLM×資格本の自炊という選択</p>
-        <span class="date">2026-01-08</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n2fc24298cb93" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/241350667/rectangle_large_type_2_7e5da3978cf2ff6c9056de3498f291a1.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">12週連続コングラ＆今週は4冠！ズボラでも続いたnote運用の話</p>
-        <span class="date">2026-01-04</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n5d98120890f5" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/240505678/rectangle_large_type_2_badebaee071f44de37835e8e16293ea9.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">新年あけましておめでとうございます🎍✨</p>
-        <span class="date">2026-01-01</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n62bb9d9fde44" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/240494757/rectangle_large_type_2_32861ff130d17d1f38bbc7a067fbcc54.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【ver3.0完成】ねんころ式 タイトル＆タグ錬成GPT、メンシプ限定公開します</p>
-        <span class="date">2026-01-01</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n693f8ef90e96" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/240493193/rectangle_large_type_2_ca9449df99127bf3f15ec5ce786ee169.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">【ver3.0】ねんころ式 タイトル＆タグ錬成GPTでできること</p>
-        <span class="date">2026-01-01</span>
+        <span class="date"></span>
       </div>
     </a>
     <a class="card" href="https://note.com/nenkoro_life/n/n069ef43ae21f" target="_blank" rel="noopener">
@@ -419,7 +62,127 @@
       <div class="card-body">
         <span class="badge">ねんころさん</span>
         <p class="card-title">2025年のねんころ振り返り｜休職と退職、そしてChatGPTと暮らしの再設計 🤖🐶</p>
-        <span class="date">2025-12-30</span>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n07aa10c76fda" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/212637554/rectangle_large_type_2_88338319aaa4d8a793d35051bf2166b2.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">【ロジ勘】ソシャゲのガチ勢はロジカル勘の権化説</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n0810d70083d4" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/228192003/rectangle_large_type_2_1b232ebabc8d6cf058d287ac4099e8f7.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">🌙今日は更新おやすみです💤（でも裏では制作地獄中🤣）</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n088e842a993b" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/226259607/rectangle_large_type_2_2ec56e127052dc9378220486b654f05c.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">💻ふなさんプロンプトがアップデートされた話🌸まっさらなAIで再現性チェックの実験レポ🤣</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n0b1a67673973" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/224891065/rectangle_large_type_2_10b1c4c30b6419b8e32e04dc043dd9b2.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">🐶本日はオレオ劇場💖 ふわもこ天使の自己紹介✨</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n0bff6720ebad" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/213183200/rectangle_large_type_2_4afa71f0d4892c747515d783e7956f51.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">はじめまして｜うつ×制度活用×美魔女リスタート</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n0c480bad63b5" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/219459497/rectangle_large_type_2_a7e99bfdf1bdf622af5650d16dee9666.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">【閑話休題】流白浪燦星（ルパン三世）の歌舞伎を観た話</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n0d208d0e7c7f" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/229562870/rectangle_large_type_2_8052d4d29e2369c5c18fde3115b88a9c.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">Logical Realist（ロジカルリアリスト）</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n0ddc6bef7e33" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/228643606/rectangle_large_type_2_5026ac1f780f452920f84a2ff13d2798.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">🌙今日のねんころラボ：制作＆勉強の日🎨📘</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n0e37927df737" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/224240043/rectangle_large_type_2_128130181e538c68168e13a505460dd9.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">【連続投稿２か月達成】スキ2,500・コメント860・ビュー24,000の軌跡📈</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n1283b668a467" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/264181036/rectangle_large_type_2_3fb5a81cc4462e4818dd4592cfaadcda.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">フリーランスで普通に毎日仕事してると気づいた話｜在宅で働く目標が現実になっていた|在宅ワーク|仕事|キャリア|エッセイ|人生|経験|日常|</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n146debb123dd" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/229322743/rectangle_large_type_2_9f7dd063d6968194191c9236a7f62cd6.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">AIくん、天野喜孝を理解しすぎ問題（ ロジ勘第３弾、ただいま鋭意制作中です🔥）</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n14df97f098a6" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/221059631/rectangle_large_type_2_92221d101ca6066c9f4959ce5d451bc7.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">崩れ・くすみ・毛穴を一掃！透明感が続く最強下地3選✨</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n194329c6ccae" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/215268098/rectangle_large_type_2_69a6bcc0eb9be3b988853b657a66b19e.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">【伝え方】アサーションがうまくいかないときのNGパターン😇</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n1c31935fa215" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/231157286/rectangle_large_type_2_a617361a0f8aa3f894909a3619cfb5ee.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">【㊗️6週連続】コングラボードありがとう…！AIと走り続けた1ヶ月半、みんなのおかげで「奇跡じゃなく必然」になった話🌸</p>
+        <span class="date"></span>
+      </div>
+    </a>
+    <a class="card" href="https://note.com/nenkoro_life/n/n1c8ca6af5161" target="_blank" rel="noopener">
+      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/232296478/rectangle_large_type_2_685c81143585eae363755c8a51f8b128.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
+      <div class="card-body">
+        <span class="badge">ねんころさん</span>
+        <p class="card-title">【無料配布】あなたのAI適性をガチ分析プロンプト｜AIが見た「才能タイプ」「扱いやすさ」「伸びしろ」と3ヶ月の成長ロードマップ</p>
+        <span class="date"></span>
       </div>
     </a>
     <a class="card" href="https://note.com/nenkoro_life/n/n1d71cf6b3730" target="_blank" rel="noopener">
@@ -427,39 +190,19 @@
       <div class="card-body">
         <span class="badge">ねんころさん</span>
         <p class="card-title">「OpenAIが本気出したらどうなる？」を真面目に妄想してみた🤣</p>
-        <span class="date">2025-12-27</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/na11692bdb2d6" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/237668039/rectangle_large_type_2_cc91aa218ffa842eb39024bc5192ddd3.png?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">荒れてたけど、ウエル活で0円会計できたから今日は勝ちです🤣</p>
-        <span class="date">2025-12-20</span>
-      </div>
-    </a>
-    <a class="card" href="https://note.com/nenkoro_life/n/n57f8445f7be0" target="_blank" rel="noopener">
-      <img class="thumb" src="https://assets.st-note.com/production/uploads/images/236747390/rectangle_large_type_2_f5a9e04376bdb0bb6846a2efad001e9d.jpg?fit=bounds&quality=85&width=1280" alt="" loading="lazy">
-      <div class="card-body">
-        <span class="badge">ねんころさん</span>
-        <p class="card-title">noteを100日以上毎日投稿して気づいた、続けるためのシンプルな考え方</p>
-        <span class="date">2025-12-18</span>
+        <span class="date"></span>
       </div>
     </a></div>
 <div class="empty" id="empty">該当する記事がありません</div>
 <footer>スキ済み記事は非表示です</footer>
 <script>
-function filter() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const cards = document.querySelectorAll('.card');
-  let n = 0;
-  cards.forEach(c => {
-    const show = c.textContent.toLowerCase().includes(q);
-    c.style.display = show ? '' : 'none';
-    if (show) n++;
-  });
-  document.getElementById('count').textContent = n + '件';
-  document.getElementById('empty').style.display = n === 0 ? 'block' : 'none';
+function filter(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const cards=document.querySelectorAll('.card');
+  let n=0;
+  cards.forEach(c=>{const show=c.textContent.toLowerCase().includes(q);c.style.display=show?'':'none';if(show)n++});
+  document.getElementById('count').textContent=n+'件';
+  document.getElementById('empty').style.display=n===0?'block':'none';
 }
 </script>
 </body>

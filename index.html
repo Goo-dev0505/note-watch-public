@@ -3,407 +3,319 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>未スキ記事リスト</title>
+<title>未スキ記事</title>
 <style>
-  /* ===== Base ===== */
   :root {
-    --bg:       #0a0e1a;
-    --surface:  #111827;
-    --surface2: #1a2235;
-    --border:   #1e293b;
-    --text:     #e2e8f0;
-    --sub:      #64748b;
-    --accent:   #00d4ff;
-    --accent2:  #f78166;
-    --badge-bg: #0e3460;
-    --badge-tx: #60a5fa;
-    --green:    #34d399;
+    --bg:      #0c0c0f;
+    --surface: #141418;
+    --border:  rgba(255,255,255,.07);
+    --text:    #f0f0f5;
+    --sub:     #6b6b80;
+    --accent:  #ffd166;
+    --pill-bg: rgba(255,255,255,.08);
+    --pill-on: #ffd166;
+    --pill-tx: #0c0c0f;
+    --overlay: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.4) 55%, transparent 100%);
+    --radius:  14px;
   }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Hiragino Sans', 'Noto Sans JP', -apple-system, sans-serif;
-    min-height: 100vh;
-    font-size: 14px;
-    line-height: 1.6;
+    min-height: 100svh;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* ===== Header ===== */
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 1.5rem;
+  /* ── Header ── */
+  .hdr {
+    padding: 1.1rem 1.1rem .6rem;
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    align-items: flex-end;
+    justify-content: space-between;
   }
-  header h1 {
-    font-size: 1rem;
-    font-weight: 700;
+  .hdr-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    color: var(--text);
+  }
+  .hdr-title em {
     color: var(--accent);
-    letter-spacing: .05em;
-    text-transform: uppercase;
+    font-style: normal;
   }
-  .meta { font-size: .72rem; color: var(--sub); margin-left: auto; }
-  .meta span { color: var(--accent2); font-weight: 600; }
+  .hdr-meta {
+    font-size: .7rem;
+    color: var(--sub);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .hdr-meta strong { color: var(--accent); }
 
-  /* ===== Toolbar ===== */
-  .toolbar {
-    padding: .75rem 1.5rem;
-    border-bottom: 1px solid var(--border);
+  /* ── Creator Tabs ── */
+  .tabs-wrap {
+    padding: .4rem 1.1rem .6rem;
     display: flex;
-    gap: .75rem;
-    align-items: center;
-    flex-wrap: wrap;
-    background: var(--surface);
-    position: sticky;
-    top: 53px;
-    z-index: 99;
+    gap: .45rem;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
+  .tabs-wrap::-webkit-scrollbar { display: none; }
+  .tab {
+    background: var(--pill-bg);
+    border: 1px solid var(--border);
+    color: var(--sub);
+    border-radius: 999px;
+    padding: .35rem 1rem;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .18s, color .18s, border-color .18s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab.active {
+    background: var(--pill-on);
+    border-color: var(--pill-on);
+    color: var(--pill-tx);
+  }
+
+  /* ── Search ── */
   .search-wrap {
-    flex: 1;
-    min-width: 200px;
+    padding: 0 1.1rem .75rem;
     position: relative;
   }
   .search-wrap svg {
     position: absolute;
-    left: .6rem;
+    left: 1.7rem;
     top: 50%;
     transform: translateY(-50%);
     color: var(--sub);
     pointer-events: none;
   }
-  .toolbar input {
+  .search-wrap input {
     width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    padding: .4rem .75rem .4rem 2rem;
-    font-size: .85rem;
-    outline: none;
-    transition: border-color .15s;
-  }
-  .toolbar input:focus { border-color: var(--accent); }
-  .count { font-size: .8rem; color: var(--sub); white-space: nowrap; }
-  .count span { color: var(--text); font-weight: 600; }
-
-  /* ===== View Toggle ===== */
-  .view-toggle {
-    display: flex;
-    gap: .25rem;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 2px;
-  }
-  .view-btn {
-    background: none;
-    border: none;
-    color: var(--sub);
-    cursor: pointer;
-    padding: .3rem .5rem;
-    border-radius: 4px;
-    transition: all .15s;
-    display: flex;
-    align-items: center;
-  }
-  .view-btn.active {
-    background: var(--accent);
-    color: #000;
-  }
-
-  /* ===== Creator Tabs ===== */
-  .creator-bar {
-    padding: .5rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: .5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
     background: var(--surface);
-  }
-  .creator-bar::-webkit-scrollbar { display: none; }
-  .tab {
-    background: var(--surface2);
     border: 1px solid var(--border);
-    color: var(--sub);
-    border-radius: 20px;
-    padding: .25rem .9rem;
-    font-size: .78rem;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all .15s;
+    border-radius: 12px;
+    color: var(--text);
+    padding: .65rem .9rem .65rem 2.4rem;
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .18s;
+    -webkit-appearance: none;
   }
-  .tab:hover { border-color: var(--accent); color: var(--text); }
-  .tab.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #000;
-    font-weight: 600;
-  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--sub); }
 
-  /* ===== Card View ===== */
+  /* ── Count bar ── */
+  .countbar {
+    padding: 0 1.1rem .55rem;
+    font-size: .72rem;
+    color: var(--sub);
+  }
+  .countbar strong { color: var(--text); }
+
+  /* ── Grid ── */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: .875rem;
-    padding: 1.25rem 1.5rem;
+    grid-template-columns: 1fr 1fr;
+    gap: .55rem;
+    padding: 0 .75rem 2rem;
   }
+
+  /* featured: 最新1件は横幅フル */
+  .card.featured {
+    grid-column: 1 / -1;
+  }
+
   .card {
-    display: flex;
-    flex-direction: column;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    position: relative;
+    border-radius: var(--radius);
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    transition: border-color .15s, transform .1s, box-shadow .15s;
-  }
-  .card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 24px rgba(0, 212, 255, .1);
-  }
-  .thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
-  .thumb-placeholder { width: 100%; aspect-ratio: 16/9; background: var(--surface2); }
-  .card-body {
-    padding: .75rem;
-    display: flex;
-    flex-direction: column;
-    gap: .35rem;
-    flex: 1;
-  }
-  .badge {
-    font-size: .68rem;
-    color: var(--badge-tx);
-    background: var(--badge-bg);
-    border-radius: 4px;
-    padding: .1rem .4rem;
-    align-self: flex-start;
-    font-weight: 600;
-  }
-  .card-title { font-size: .85rem; font-weight: 600; line-height: 1.45; }
-  .card-date { font-size: .7rem; color: var(--sub); margin-top: auto; padding-top: .35rem; }
-
-  /* ===== List View ===== */
-  .list-view {
-    padding: .75rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: .375rem;
-  }
-  .list-item {
-    display: flex;
-    align-items: center;
-    gap: .875rem;
+    display: block;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: .625rem .875rem;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color .15s, background .15s;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .18s, box-shadow .18s;
+    will-change: transform;
   }
-  .list-item:hover {
-    border-color: var(--accent);
-    background: var(--surface2);
-  }
-  .list-thumb {
-    width: 72px;
-    height: 40px;
+  .card:active { transform: scale(.97); }
+
+  /* サムネ */
+  .card-img {
+    width: 100%;
+    aspect-ratio: 4/3;
     object-fit: cover;
-    border-radius: 4px;
-    flex-shrink: 0;
-    background: var(--surface2);
+    display: block;
+    transition: transform .3s;
   }
-  .list-thumb-placeholder {
-    width: 72px;
-    height: 40px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    background: var(--surface2);
+  .card.featured .card-img { aspect-ratio: 16/7; }
+  .card-img-placeholder {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, #1a1a22, #22222e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
   }
-  .list-body {
-    flex: 1;
-    min-width: 0;
+  .card.featured .card-img-placeholder { aspect-ratio: 16/7; }
+
+  /* オーバーレイテキスト */
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--overlay);
     display: flex;
     flex-direction: column;
-    gap: .2rem;
+    justify-content: flex-end;
+    padding: .65rem .7rem;
+    gap: .3rem;
   }
-  .list-title {
-    font-size: .85rem;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .list-meta {
-    display: flex;
-    gap: .5rem;
-    align-items: center;
-    font-size: .7rem;
-    color: var(--sub);
-  }
-  .list-arrow {
-    color: var(--sub);
-    flex-shrink: 0;
-    transition: color .15s, transform .15s;
-  }
-  .list-item:hover .list-arrow {
+  .card.featured .card-overlay { padding: 1rem 1.1rem; }
+
+  .card-badge {
+    font-size: .62rem;
+    font-weight: 700;
     color: var(--accent);
-    transform: translateX(2px);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    opacity: .9;
+  }
+  .card-title {
+    font-size: .78rem;
+    font-weight: 700;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,.5);
+  }
+  .card.featured .card-title {
+    font-size: 1rem;
+    -webkit-line-clamp: 2;
+  }
+  .card-date {
+    font-size: .62rem;
+    color: rgba(255,255,255,.5);
+    margin-top: .1rem;
   }
 
-  /* ===== Empty ===== */
+  /* ── Empty ── */
   .empty {
+    display: none;
     text-align: center;
     padding: 5rem 2rem;
     color: var(--sub);
-    font-size: .9rem;
-    display: none;
   }
-  .empty-icon { font-size: 2.5rem; margin-bottom: .75rem; }
+  .empty-icon { font-size: 3rem; margin-bottom: .75rem; }
 
-  /* ===== Footer ===== */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 1rem 1.5rem;
-    text-align: center;
-    font-size: .7rem;
-    color: var(--sub);
+  /* ── Safe area ── */
+  .safe-bottom { height: env(safe-area-inset-bottom, 0px); }
+
+  /* ── PC補正（600px以上） ── */
+  @media (min-width: 600px) {
+    .grid { grid-template-columns: repeat(3, 1fr); padding: 0 1rem 2rem; }
+    .card.featured { grid-column: 1 / -1; }
+    .card.featured .card-img { aspect-ratio: 21/7; }
+    .card.featured .card-img-placeholder { aspect-ratio: 21/7; }
+    .card-title { font-size: .82rem; }
+    .card.featured .card-title { font-size: 1.15rem; }
+    .hdr { padding: 1.4rem 1.4rem .8rem; }
+    .tabs-wrap, .search-wrap, .countbar { padding-left: 1.4rem; padding-right: 1.4rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-  <h1>💛 未スキ記事リスト</h1>
-  <span class="meta">更新: 2026-04-03 06:41 JST &nbsp;|&nbsp; <span>42</span>件</span>
-</header>
+<div class="hdr">
+  <div class="hdr-title">💛 <em>未スキ</em>記事</div>
+  <div class="hdr-meta">
+    <strong id="disp-count">72</strong> 件<br>
+    2026-04-03 06:49 JST
+  </div>
+</div>
 
-<!-- Creator Tabs -->
-<div class="creator-bar">
+<div class="tabs-wrap">
   <button class="tab active" data-creator="all">すべて</button>
   <button class="tab" data-creator="ねんころさん">ねんころさん</button>
 <button class="tab" data-creator="緑どんぐりさん">緑どんぐりさん</button>
 <button class="tab" data-creator="濱口貴光さん">濱口貴光さん</button>
-
+<button class="tab" data-creator="はしゃもさん">はしゃもさん</button>
 </div>
 
-<!-- Toolbar -->
-<div class="toolbar">
-  <div class="search-wrap">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="search" id="search" placeholder="タイトル・クリエイターで絞り込み…" oninput="render()">
-  </div>
-  <span class="count"><span id="count">42</span> 件</span>
-  <div class="view-toggle">
-    <button class="view-btn active" id="btn-card" onclick="setView('card')" title="カード表示">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
-    </button>
-    <button class="view-btn" id="btn-list" onclick="setView('list')" title="リスト表示">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    </button>
-  </div>
+<div class="search-wrap">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  <input type="search" id="q" placeholder="タイトル・クリエイターを検索…" oninput="render()" autocomplete="off" spellcheck="false">
 </div>
 
-<!-- Content -->
-<div id="content"></div>
+<div class="countbar"><strong id="count-label">72</strong> 件表示中</div>
+
+<div class="grid" id="grid"></div>
 <div class="empty" id="empty">
   <div class="empty-icon">🔍</div>
   該当する記事がありません
 </div>
-
-<footer>スキ済み記事は非表示 &nbsp;·&nbsp; note Watch Tool</footer>
+<div class="safe-bottom"></div>
 
 <script>
-const ARTICLES = [{"note_key": "n0810d70083d4", "title": "🌙今日は更新おやすみです💤（でも裏では制作地獄中🤣）", "note_url": "https://note.com/nenkoro_life/n/n0810d70083d4", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/228192003/rectangle_large_type_2_1b232ebabc8d6cf058d287ac4099e8f7.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n088e842a993b", "title": "💻ふなさんプロンプトがアップデートされた話🌸まっさらなAIで再現性チェックの実験レポ🤣", "note_url": "https://note.com/nenkoro_life/n/n088e842a993b", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/226259607/rectangle_large_type_2_2ec56e127052dc9378220486b654f05c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n0b1a67673973", "title": "🐶本日はオレオ劇場💖 ふわもこ天使の自己紹介✨", "note_url": "https://note.com/nenkoro_life/n/n0b1a67673973", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/224891065/rectangle_large_type_2_10b1c4c30b6419b8e32e04dc043dd9b2.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n0d208d0e7c7f", "title": "Logical Realist（ロジカルリアリスト）", "note_url": "https://note.com/nenkoro_life/n/n0d208d0e7c7f", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/229562870/rectangle_large_type_2_8052d4d29e2369c5c18fde3115b88a9c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n0ddc6bef7e33", "title": "🌙今日のねんころラボ：制作＆勉強の日🎨📘", "note_url": "https://note.com/nenkoro_life/n/n0ddc6bef7e33", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/228643606/rectangle_large_type_2_5026ac1f780f452920f84a2ff13d2798.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n0e37927df737", "title": "【連続投稿２か月達成】スキ2,500・コメント860・ビュー24,000の軌跡📈", "note_url": "https://note.com/nenkoro_life/n/n0e37927df737", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/224240043/rectangle_large_type_2_128130181e538c68168e13a505460dd9.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n146debb123dd", "title": "AIくん、天野喜孝を理解しすぎ問題（ ロジ勘第３弾、ただいま鋭意制作中です🔥）", "note_url": "https://note.com/nenkoro_life/n/n146debb123dd", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/229322743/rectangle_large_type_2_9f7dd063d6968194191c9236a7f62cd6.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n14df97f098a6", "title": "崩れ・くすみ・毛穴を一掃！透明感が続く最強下地3選✨", "note_url": "https://note.com/nenkoro_life/n/n14df97f098a6", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/221059631/rectangle_large_type_2_92221d101ca6066c9f4959ce5d451bc7.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n194329c6ccae", "title": "【伝え方】アサーションがうまくいかないときのNGパターン😇", "note_url": "https://note.com/nenkoro_life/n/n194329c6ccae", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/215268098/rectangle_large_type_2_69a6bcc0eb9be3b988853b657a66b19e.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n07cf8b307829", "title": "ニュース整理！情報を読み解くプロンプト", "note_url": "https://note.com/green_donguri/n/n07cf8b307829", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/225934142/rectangle_large_type_2_3a50a6d859fee464cf1638ea51577434.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n1077f45ea7db", "title": "【AIイラストの考え方】テーマから逆算する", "note_url": "https://note.com/green_donguri/n/n1077f45ea7db", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/259662989/rectangle_large_type_2_41681e48d3a9dd1af48427bc8ba9625b.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n120455e76709", "title": "森の切り株サロン、本日開店｜宇宙珍獣ユル勇者あかね祭り", "note_url": "https://note.com/green_donguri/n/n120455e76709", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/259890500/rectangle_large_type_2_379f25f6ffeaa59fc7f1a26d6ec8bb7d.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n133b5a5258eb", "title": "楽天市場にAIがいたので、さっそく遊んでみた", "note_url": "https://note.com/green_donguri/n/n133b5a5258eb", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/240743288/rectangle_large_type_2_e9d2b19655543976e28bb415012f640d.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n137c754021cc", "title": "【AIの答えのかたち】選択肢つきの答えは、判断を軽くする", "note_url": "https://note.com/green_donguri/n/n137c754021cc", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/248107872/rectangle_large_type_2_2b8447bb1d03891346d1cd42faa4027a.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n13d43c5990fe", "title": "【PR】新生活の朝に、風が吹いた｜Pollo AIで静止画を動かした“時間”の体感", "note_url": "https://note.com/green_donguri/n/n13d43c5990fe", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/255528436/rectangle_large_type_2_3462fc663bd3339dd03679cfa1c29684.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n1e98d8b8b653", "title": "⚔️ Intuitive Fighter（直感ファイター）", "note_url": "https://note.com/nenkoro_life/n/n1e98d8b8b653", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/229534736/rectangle_large_type_2_4e89893fd0933ed8f82f1155631bc60c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n23b4d8da6547", "title": "【障害者雇用×就労移行】MOS資格は必須？私が資格なしで就職できた理由", "note_url": "https://note.com/nenkoro_life/n/n23b4d8da6547", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/216416946/rectangle_large_type_2_6c34e41401cde67c39135a8e6bf67ca3.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n256cee2080cf", "title": "【経験談】うつ病と診断されてから、障害者手帳を取るまでの“心の変化”全部見せます😇", "note_url": "https://note.com/nenkoro_life/n/n256cee2080cf", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/210556754/rectangle_large_type_2_54c941e67ce56ef77bc9fe8b8cef795f.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n270fce89eaa9", "title": "AIスクールはいらない？月1万円のAI課金で独学→資格→仕事につながった話|AI活用|生成AI|ChatGPT|副業|note運用|学び|", "note_url": "https://note.com/nenkoro_life/n/n270fce89eaa9", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/260097895/rectangle_large_type_2_aa237f261a5d1c185de5a9f304511c3c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n274407008c47", "title": "🌸今日のゆる日記：Wi-Fiが息絶えたので、優雅に早退した話🤣", "note_url": "https://note.com/nenkoro_life/n/n274407008c47", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/230053904/rectangle_large_type_2_07c986491ef44485861adc15fe977414.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n29de4f9ed1e7", "title": "今日はゆるく、おやすみ投稿です", "note_url": "https://note.com/nenkoro_life/n/n29de4f9ed1e7", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/236145634/rectangle_large_type_2_51fe9e7092c3a170b16a91d96c34d3d3.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n2b9c80e4113a", "title": "ロジ勘、実はかなり科学的でした。【二重過程理論×MBTI×ビッグファイブ】", "note_url": "https://note.com/nenkoro_life/n/n2b9c80e4113a", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/230295060/rectangle_large_type_2_c9e4cadba92688895a08edc0724cde37.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n2cc2630d0ca4", "title": "【仮報告】現時点で10週連続コングラ＆7冠でした🤭✨", "note_url": "https://note.com/nenkoro_life/n/n2cc2630d0ca4", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/236535566/rectangle_large_type_2_e73b8d8202887d6223e2b5c3e9e59d90.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n2ced0be07099", "title": "G検定の勉強を始めた理由｜Udemy活用でAI基礎を体系的に学ぶ方法", "note_url": "https://note.com/nenkoro_life/n/n2ced0be07099", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/233717861/rectangle_large_type_2_cc0180d1ca4062f8e0e79c696e86088c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n2d9d5ef04a27", "title": "☕ねんころ的・ご縁に感謝のクリエイターさん紹介【後半編】💐", "note_url": "https://note.com/nenkoro_life/n/n2d9d5ef04a27", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/222653844/rectangle_large_type_2_0e98d5dd61261657b0874d49cd15c57a.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n2f44bb184eb8", "title": "カウンセリングが必要な人・必要ない人", "note_url": "https://note.com/nenkoro_life/n/n2f44bb184eb8", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/214819541/rectangle_large_type_2_cadccc1112c0b1b2924594aba62a2f49.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n303da3a6de16", "title": "🌸またコングラボードもらっちゃいました！🌳✨", "note_url": "https://note.com/nenkoro_life/n/n303da3a6de16", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/225142065/rectangle_large_type_2_94aa6072bd22fca3a23b8f45a5e646bf.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n313d249dc26c", "title": "特例子会社で“違和感”を感じた私が、自分らしさを取り戻した話", "note_url": "https://note.com/nenkoro_life/n/n313d249dc26c", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/211793074/rectangle_large_type_2_88211faa17d7acbebb8e0eb21541d610.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n33aa50b2fb4c", "title": "Pollo AIで犬のAI動画を作る方法｜初心者向け3ステップ解説|AI活用|生成AI|動画生成AI|AIツール|PR", "note_url": "https://note.com/nenkoro_life/n/n33aa50b2fb4c", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/263415471/rectangle_large_type_2_810a505053f8d3ab165cb993035ded71.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n340ffe1b0913", "title": "💖気づけば3万ビュー！？数字よりも“つながり”が宝物だった話🌸", "note_url": "https://note.com/nenkoro_life/n/n340ffe1b0913", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/226771218/rectangle_large_type_2_407a48eb3ea2be02c94c7c3e199a7b2b.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"note_key": "n170f64541938", "title": "使われなかった画像を、言い訳しながら並べてみた", "note_url": "https://note.com/green_donguri/n/n170f64541938", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/220297086/rectangle_large_type_2_1dc613526df1255df82c381dd422b03d.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n1b1f9f41c732", "title": "【初心者向け】ペルソナプロンプト", "note_url": "https://note.com/green_donguri/n/n1b1f9f41c732", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/221865570/rectangle_large_type_2_177443c9ead738031456a0cd8363575c.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n261b7036c8b2", "title": "【応用編】Streaming RAGプロンプト", "note_url": "https://note.com/green_donguri/n/n261b7036c8b2", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/224370980/rectangle_large_type_2_d493ccab2ba3d425b2dd5134cc4c6d0a.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n27dcce76ea3c", "title": "受験勉強の息抜きに：AI学習ゲーム化プロンプトを作ってみた", "note_url": "https://note.com/green_donguri/n/n27dcce76ea3c", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/212690367/rectangle_large_type_2_5c231b86aeb2ff35edf0e58e4039618c.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"note_key": "n084b8d18193a", "title": "つい「完了した」と判断してしまう生成AI", "note_url": "https://note.com/pharma_i_cist/n/n084b8d18193a", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/247731339/rectangle_large_type_2_6731b1eff47354f6cd2e3c1ed4523c4e.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"note_key": "n0a038018c394", "title": "「AIは要件通りにアプリ開発ができるか」を検証した研究から、調剤薬局におけるバイブコーディングを考える", "note_url": "https://note.com/pharma_i_cist/n/n0a038018c394", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/257723659/rectangle_large_type_2_f3c8f4ecfe0063bc0d7eb2f834b5b56a.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"note_key": "n0a05068bf6f1", "title": "調剤薬局での「例え話」も、用法用量を守りましょう", "note_url": "https://note.com/pharma_i_cist/n/n0a05068bf6f1", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/212162099/rectangle_large_type_2_7f861c57d407d43ff1b9ef1e06471591.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"note_key": "n0b7a1f97239b", "title": "生成AIを毎日使っている人と「うつ」の関係", "note_url": "https://note.com/pharma_i_cist/n/n0b7a1f97239b", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/246713977/rectangle_large_type_2_00e9ead393786e8cf240b16db0a6ce74.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"note_key": "n0d17ae06f4ed", "title": "フリーWi-Fiに自動で接続していませんか？", "note_url": "https://note.com/pharma_i_cist/n/n0d17ae06f4ed", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/195548132/rectangle_large_type_2_d95a251126e983aff9a77a6d781508e9.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"note_key": "n0d1f0a27abe1", "title": "AIに「性格」を与える研究", "note_url": "https://note.com/pharma_i_cist/n/n0d1f0a27abe1", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/218302471/rectangle_large_type_2_b3c86186e61776a4a8157495f68b27f0.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"note_key": "n0d60b2da35ef", "title": "Webスクレイピングを始める前に", "note_url": "https://note.com/pharma_i_cist/n/n0d60b2da35ef", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/210949114/rectangle_large_type_2_4fb4a30814d8dbe49ffef99d60e31402.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"note_key": "n14a736e1065a", "title": "AIが「再編集」した資料が、内容の理解を手助けする？", "note_url": "https://note.com/pharma_i_cist/n/n14a736e1065a", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/217416541/rectangle_large_type_2_7d41f281c9daa181fd7fd6ccf511d19c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}];
-let currentView    = 'card';
-let currentCreator = 'all';
+const DATA = [{"title": "🌙今日は更新おやすみです💤（でも裏では制作地獄中🤣）", "note_url": "https://note.com/nenkoro_life/n/n0810d70083d4", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/228192003/rectangle_large_type_2_1b232ebabc8d6cf058d287ac4099e8f7.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "💻ふなさんプロンプトがアップデートされた話🌸まっさらなAIで再現性チェックの実験レポ🤣", "note_url": "https://note.com/nenkoro_life/n/n088e842a993b", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/226259607/rectangle_large_type_2_2ec56e127052dc9378220486b654f05c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "🐶本日はオレオ劇場💖 ふわもこ天使の自己紹介✨", "note_url": "https://note.com/nenkoro_life/n/n0b1a67673973", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/224891065/rectangle_large_type_2_10b1c4c30b6419b8e32e04dc043dd9b2.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "Logical Realist（ロジカルリアリスト）", "note_url": "https://note.com/nenkoro_life/n/n0d208d0e7c7f", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/229562870/rectangle_large_type_2_8052d4d29e2369c5c18fde3115b88a9c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "🌙今日のねんころラボ：制作＆勉強の日🎨📘", "note_url": "https://note.com/nenkoro_life/n/n0ddc6bef7e33", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/228643606/rectangle_large_type_2_5026ac1f780f452920f84a2ff13d2798.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【連続投稿２か月達成】スキ2,500・コメント860・ビュー24,000の軌跡📈", "note_url": "https://note.com/nenkoro_life/n/n0e37927df737", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/224240043/rectangle_large_type_2_128130181e538c68168e13a505460dd9.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "AIくん、天野喜孝を理解しすぎ問題（ ロジ勘第３弾、ただいま鋭意制作中です🔥）", "note_url": "https://note.com/nenkoro_life/n/n146debb123dd", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/229322743/rectangle_large_type_2_9f7dd063d6968194191c9236a7f62cd6.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "崩れ・くすみ・毛穴を一掃！透明感が続く最強下地3選✨", "note_url": "https://note.com/nenkoro_life/n/n14df97f098a6", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/221059631/rectangle_large_type_2_92221d101ca6066c9f4959ce5d451bc7.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【伝え方】アサーションがうまくいかないときのNGパターン😇", "note_url": "https://note.com/nenkoro_life/n/n194329c6ccae", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/215268098/rectangle_large_type_2_69a6bcc0eb9be3b988853b657a66b19e.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "ニュース整理！情報を読み解くプロンプト", "note_url": "https://note.com/green_donguri/n/n07cf8b307829", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/225934142/rectangle_large_type_2_3a50a6d859fee464cf1638ea51577434.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "【AIイラストの考え方】テーマから逆算する", "note_url": "https://note.com/green_donguri/n/n1077f45ea7db", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/259662989/rectangle_large_type_2_41681e48d3a9dd1af48427bc8ba9625b.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "森の切り株サロン、本日開店｜宇宙珍獣ユル勇者あかね祭り", "note_url": "https://note.com/green_donguri/n/n120455e76709", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/259890500/rectangle_large_type_2_379f25f6ffeaa59fc7f1a26d6ec8bb7d.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "楽天市場にAIがいたので、さっそく遊んでみた", "note_url": "https://note.com/green_donguri/n/n133b5a5258eb", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/240743288/rectangle_large_type_2_e9d2b19655543976e28bb415012f640d.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "【AIの答えのかたち】選択肢つきの答えは、判断を軽くする", "note_url": "https://note.com/green_donguri/n/n137c754021cc", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/248107872/rectangle_large_type_2_2b8447bb1d03891346d1cd42faa4027a.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "【PR】新生活の朝に、風が吹いた｜Pollo AIで静止画を動かした“時間”の体感", "note_url": "https://note.com/green_donguri/n/n13d43c5990fe", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/255528436/rectangle_large_type_2_3462fc663bd3339dd03679cfa1c29684.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "⚔️ Intuitive Fighter（直感ファイター）", "note_url": "https://note.com/nenkoro_life/n/n1e98d8b8b653", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/229534736/rectangle_large_type_2_4e89893fd0933ed8f82f1155631bc60c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【障害者雇用×就労移行】MOS資格は必須？私が資格なしで就職できた理由", "note_url": "https://note.com/nenkoro_life/n/n23b4d8da6547", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/216416946/rectangle_large_type_2_6c34e41401cde67c39135a8e6bf67ca3.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【経験談】うつ病と診断されてから、障害者手帳を取るまでの“心の変化”全部見せます😇", "note_url": "https://note.com/nenkoro_life/n/n256cee2080cf", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/210556754/rectangle_large_type_2_54c941e67ce56ef77bc9fe8b8cef795f.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "AIスクールはいらない？月1万円のAI課金で独学→資格→仕事につながった話|AI活用|生成AI|ChatGPT|副業|note運用|学び|", "note_url": "https://note.com/nenkoro_life/n/n270fce89eaa9", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/260097895/rectangle_large_type_2_aa237f261a5d1c185de5a9f304511c3c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "🌸今日のゆる日記：Wi-Fiが息絶えたので、優雅に早退した話🤣", "note_url": "https://note.com/nenkoro_life/n/n274407008c47", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/230053904/rectangle_large_type_2_07c986491ef44485861adc15fe977414.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "今日はゆるく、おやすみ投稿です", "note_url": "https://note.com/nenkoro_life/n/n29de4f9ed1e7", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/236145634/rectangle_large_type_2_51fe9e7092c3a170b16a91d96c34d3d3.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "ロジ勘、実はかなり科学的でした。【二重過程理論×MBTI×ビッグファイブ】", "note_url": "https://note.com/nenkoro_life/n/n2b9c80e4113a", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/230295060/rectangle_large_type_2_c9e4cadba92688895a08edc0724cde37.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【仮報告】現時点で10週連続コングラ＆7冠でした🤭✨", "note_url": "https://note.com/nenkoro_life/n/n2cc2630d0ca4", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/236535566/rectangle_large_type_2_e73b8d8202887d6223e2b5c3e9e59d90.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "G検定の勉強を始めた理由｜Udemy活用でAI基礎を体系的に学ぶ方法", "note_url": "https://note.com/nenkoro_life/n/n2ced0be07099", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/233717861/rectangle_large_type_2_cc0180d1ca4062f8e0e79c696e86088c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "☕ねんころ的・ご縁に感謝のクリエイターさん紹介【後半編】💐", "note_url": "https://note.com/nenkoro_life/n/n2d9d5ef04a27", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/222653844/rectangle_large_type_2_0e98d5dd61261657b0874d49cd15c57a.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "カウンセリングが必要な人・必要ない人", "note_url": "https://note.com/nenkoro_life/n/n2f44bb184eb8", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/214819541/rectangle_large_type_2_cadccc1112c0b1b2924594aba62a2f49.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "🌸またコングラボードもらっちゃいました！🌳✨", "note_url": "https://note.com/nenkoro_life/n/n303da3a6de16", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/225142065/rectangle_large_type_2_94aa6072bd22fca3a23b8f45a5e646bf.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "特例子会社で“違和感”を感じた私が、自分らしさを取り戻した話", "note_url": "https://note.com/nenkoro_life/n/n313d249dc26c", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/211793074/rectangle_large_type_2_88211faa17d7acbebb8e0eb21541d610.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "Pollo AIで犬のAI動画を作る方法｜初心者向け3ステップ解説|AI活用|生成AI|動画生成AI|AIツール|PR", "note_url": "https://note.com/nenkoro_life/n/n33aa50b2fb4c", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/263415471/rectangle_large_type_2_810a505053f8d3ab165cb993035ded71.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "💖気づけば3万ビュー！？数字よりも“つながり”が宝物だった話🌸", "note_url": "https://note.com/nenkoro_life/n/n340ffe1b0913", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/226771218/rectangle_large_type_2_407a48eb3ea2be02c94c7c3e199a7b2b.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "使われなかった画像を、言い訳しながら並べてみた", "note_url": "https://note.com/green_donguri/n/n170f64541938", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/220297086/rectangle_large_type_2_1dc613526df1255df82c381dd422b03d.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "【初心者向け】ペルソナプロンプト", "note_url": "https://note.com/green_donguri/n/n1b1f9f41c732", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/221865570/rectangle_large_type_2_177443c9ead738031456a0cd8363575c.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "【応用編】Streaming RAGプロンプト", "note_url": "https://note.com/green_donguri/n/n261b7036c8b2", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/224370980/rectangle_large_type_2_d493ccab2ba3d425b2dd5134cc4c6d0a.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "受験勉強の息抜きに：AI学習ゲーム化プロンプトを作ってみた", "note_url": "https://note.com/green_donguri/n/n27dcce76ea3c", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/212690367/rectangle_large_type_2_5c231b86aeb2ff35edf0e58e4039618c.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "つい「完了した」と判断してしまう生成AI", "note_url": "https://note.com/pharma_i_cist/n/n084b8d18193a", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/247731339/rectangle_large_type_2_6731b1eff47354f6cd2e3c1ed4523c4e.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "「AIは要件通りにアプリ開発ができるか」を検証した研究から、調剤薬局におけるバイブコーディングを考える", "note_url": "https://note.com/pharma_i_cist/n/n0a038018c394", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/257723659/rectangle_large_type_2_f3c8f4ecfe0063bc0d7eb2f834b5b56a.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "調剤薬局での「例え話」も、用法用量を守りましょう", "note_url": "https://note.com/pharma_i_cist/n/n0a05068bf6f1", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/212162099/rectangle_large_type_2_7f861c57d407d43ff1b9ef1e06471591.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "生成AIを毎日使っている人と「うつ」の関係", "note_url": "https://note.com/pharma_i_cist/n/n0b7a1f97239b", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/246713977/rectangle_large_type_2_00e9ead393786e8cf240b16db0a6ce74.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "フリーWi-Fiに自動で接続していませんか？", "note_url": "https://note.com/pharma_i_cist/n/n0d17ae06f4ed", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/195548132/rectangle_large_type_2_d95a251126e983aff9a77a6d781508e9.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "AIに「性格」を与える研究", "note_url": "https://note.com/pharma_i_cist/n/n0d1f0a27abe1", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/218302471/rectangle_large_type_2_b3c86186e61776a4a8157495f68b27f0.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "Webスクレイピングを始める前に", "note_url": "https://note.com/pharma_i_cist/n/n0d60b2da35ef", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/210949114/rectangle_large_type_2_4fb4a30814d8dbe49ffef99d60e31402.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "AIが「再編集」した資料が、内容の理解を手助けする？", "note_url": "https://note.com/pharma_i_cist/n/n14a736e1065a", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/217416541/rectangle_large_type_2_7d41f281c9daa181fd7fd6ccf511d19c.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "💜AIくんがDBのトランクス愛を語ったら、想像以上に同志だった件🔥", "note_url": "https://note.com/nenkoro_life/n/n3589850b63bd", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/228856743/rectangle_large_type_2_9feec7bb4db7d796412f6e868ecb223b.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "Qoo10“再生系王道”はこの2択！リジュラン【ゴールドセット】＆【トナー付きマスク】で翌朝つやん✨", "note_url": "https://note.com/nenkoro_life/n/n436bac43c0bf", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/227446394/rectangle_large_type_2_0d1df94e4baceabc582b712068deb290.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "Pollo Agentとは？ペット動画を作ってみた｜パピヨンが別犬になった原因と解決法|AI活用|生成AI|動画生成AI|Pollo AI|PR|", "note_url": "https://note.com/nenkoro_life/n/n4490d3b895f1", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/260356162/rectangle_large_type_2_6ac653d6c959f34271d5f75b0e758463.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "🎉またまた #漫画 タグで1位⁉️✨漫画描いてないのに……漫画タグ1位、再び🤣", "note_url": "https://note.com/nenkoro_life/n/n454ae571ae8a", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/221975800/rectangle_large_type_2_fc13b602b050bfd66e5d80f4f65949ee.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "Intuitive Creator（直感クリエイティブ）", "note_url": "https://note.com/nenkoro_life/n/n4c27b81f0c30", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/229545591/rectangle_large_type_2_2f6417f1de3b1dc076e6372718dd994d.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【うつ病リアル】認知の歪みがなくても、うつになるし、薬9種類ないと生きられない人間もいる😇", "note_url": "https://note.com/nenkoro_life/n/n4d937adb5c64", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/215773370/rectangle_large_type_2_cbb3f0f5d416b8ddcc539db01ea86190.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "スキンケアさぼり魔が「20代に見られた」方法ほぼ全部", "note_url": "https://note.com/nenkoro_life/n/n4dfc808c560e", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/210588811/rectangle_large_type_2_255471a92012b24da7c537748cd7bfac.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "⚖️ Hybrid Equilibrium（ロジ勘ハイブリッド）", "note_url": "https://note.com/nenkoro_life/n/n4fcd6496fc9a", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/229495834/rectangle_large_type_2_b99f6cb9b49b73f95c9e915df888c58a.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "note3ヶ月の成長ログ｜AI×創作×毎日投稿で積み上がった数字と変化をまとめてみた／AI創作／Midjourney／GPTs／毎日投稿／note振り返り／成長ログ", "note_url": "https://note.com/nenkoro_life/n/n5089ec4e0ff1", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/231176122/rectangle_large_type_2_308c49656f80bfa0d04c6e33614f0cf3.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【ロジ勘】ChatGPTに指摘されて気づいた──私、実は“ロジ勘体質”でした", "note_url": "https://note.com/nenkoro_life/n/n50eda0f2268c", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/212426611/rectangle_large_type_2_5c726e3d3c315ca4982fbd5a8071ccea.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【障害者雇用】合理的配慮＝魔法のカードじゃない話😇", "note_url": "https://note.com/nenkoro_life/n/n526bb02f1154", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/214942436/rectangle_large_type_2_280f129a4e27dd8207f937bd987e8098.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【体験談】特例子会社に転籍したら“努力が無意味”になった話｜障害者雇用のリアル", "note_url": "https://note.com/nenkoro_life/n/n52def9a7cf11", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/213680472/rectangle_large_type_2_ab47741c155c6d814074d8c0ba54d329.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "【感謝】100フォロワー達成しました！🎉", "note_url": "https://note.com/nenkoro_life/n/n53cfcf1b70e0", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/216474709/rectangle_large_type_2_427f52975b839052fbc46a5d40187f93.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "ねんころさん"}, {"title": "AIに自己紹介してもらったら、私ってこんな人らしい", "note_url": "https://note.com/green_donguri/n/n2be536c3e8a1", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/212915740/rectangle_large_type_2_236049bf9b75dd38ae13978ba1456e3f.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "遊びでAIと盛り上がる！初心者向けチェーンプロンプト3選", "note_url": "https://note.com/green_donguri/n/n2d68d4bbfe49", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/211093391/rectangle_large_type_2_931f2a143a6afd51d3ac99ca2fd5d439.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "遊んで使える逆プロンプト3選", "note_url": "https://note.com/green_donguri/n/n2fdb8db82c81", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/212372872/rectangle_large_type_2_eee7b13581d1470c86b0f65da558cd69.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "【初心者向け】制約プロンプト", "note_url": "https://note.com/green_donguri/n/n3cfacf456b7c", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/214619647/rectangle_large_type_2_c26adf2251261cef841f69b0ad3784b1.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "【応用編】ガードレール×スタイルガイドプロンプト", "note_url": "https://note.com/green_donguri/n/n3e7dfd59da91", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/219365012/rectangle_large_type_2_fae4540e8ce0ec39d9661e1608b55dee.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "2025年を振り返る「成長と気づきのおみくじ」を作ってみた", "note_url": "https://note.com/green_donguri/n/n402cc81c74cb", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/239837236/rectangle_large_type_2_aa161feaa1e76110f291ab8716637848.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "【応用編】GoT×自動最適化ループ：プロンプト", "note_url": "https://note.com/green_donguri/n/n45b2769aa69d", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/221456975/rectangle_large_type_2_9db369752195b0b0e4bd7c8f5ae83523.jpg?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "緑どんぐりさん"}, {"title": "ChatGPTの各モデルの特徴・用途の違い", "note_url": "https://note.com/pharma_i_cist/n/n15c1edda881e", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/189397697/rectangle_large_type_2_ca0a6373aa0c48d14eb9a9077ff15e77.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "ビジネスの世界に溢れる横文字や専門用語を、生成AIで攻略できるか", "note_url": "https://note.com/pharma_i_cist/n/n15fd4b7d13c3", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/211918305/rectangle_large_type_2_edc76eec18b17d3ec3448de903fd99cc.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "簡易版Consensus AI「Consensus GPT」", "note_url": "https://note.com/pharma_i_cist/n/n173fd821501d", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/213230700/rectangle_large_type_2_45117e34cf72332b5ba8108222f434bd.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "NotebookLMの音声概要", "note_url": "https://note.com/pharma_i_cist/n/n19ed45229979", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/187995732/rectangle_large_type_2_24aac11d98f93234cf23228d0109c9be.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "調剤薬局の業務を生成AIで効率化する", "note_url": "https://note.com/pharma_i_cist/n/n1b0c6aed9b73", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/185910238/rectangle_large_type_2_7afe87f32f9a87286d6b203bde99e0c1.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "AIは全人的苦痛を理解できるか", "note_url": "https://note.com/pharma_i_cist/n/n1c84dbec3505", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/210589623/rectangle_large_type_2_2cf05f8903e3d1b13c111b39fbcb7bf6.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "タスク機能で、ChatGPTを秘書に", "note_url": "https://note.com/pharma_i_cist/n/n211af0e12321", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/215472642/rectangle_large_type_2_b93211379a4e41620cf1d74fdc4a1159.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "AIが書いた論文の「著者」は誰？", "note_url": "https://note.com/pharma_i_cist/n/n218004dc4986", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/218693416/rectangle_large_type_2_e7ca445e68d3285fece791782fa56e06.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "書籍「超知能時代の調剤薬局」を出版しました", "note_url": "https://note.com/pharma_i_cist/n/n23a9a1265b7b", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/216477344/rectangle_large_type_2_acb718c6e07866d9cf630706afce57c4.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "濱口貴光さん"}, {"title": "【自己紹介】「おはようカノジョ」作ってます", "note_url": "https://note.com/hasyamo/n/n2322613ddd73", "thumbnail_url": "https://assets.st-note.com/production/uploads/images/240528770/rectangle_large_type_2_ba810db162f7e7648cdf9f8a2c0db53d.png?fit=bounds&quality=85&width=1280", "published_at": "", "target_name": "はしゃもさん"}];
+let creator = 'all';
 
-// クリエイタータブ
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentCreator = tab.dataset.creator;
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    creator = t.dataset.creator;
     render();
   });
 });
 
-function setView(v) {
-  currentView = v;
-  document.getElementById('btn-card').classList.toggle('active', v === 'card');
-  document.getElementById('btn-list').classList.toggle('active', v === 'list');
-  render();
-}
-
 function filtered() {
-  const q = document.getElementById('search').value.toLowerCase();
-  return ARTICLES.filter(a => {
-    const matchCreator = currentCreator === 'all' || a.target_name === currentCreator;
-    const matchSearch  = !q || a.title.toLowerCase().includes(q) || a.target_name.toLowerCase().includes(q);
-    return matchCreator && matchSearch;
+  const q = (document.getElementById('q').value || '').toLowerCase();
+  return DATA.filter(a => {
+    if (creator !== 'all' && a.target_name !== creator) return false;
+    if (q && !a.title.toLowerCase().includes(q) && !a.target_name.toLowerCase().includes(q)) return false;
+    return true;
   });
 }
 
 function render() {
-  const items   = filtered();
-  const content = document.getElementById('content');
-  const empty   = document.getElementById('empty');
-  document.getElementById('count').textContent = items.length;
+  const items = filtered();
+  const grid  = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  document.getElementById('disp-count').textContent = items.length;
+  document.getElementById('count-label').textContent = items.length;
 
   if (!items.length) {
-    content.innerHTML = '';
+    grid.innerHTML = '';
     empty.style.display = 'block';
     return;
   }
   empty.style.display = 'none';
 
-  if (currentView === 'card') {
-    const cards = items.map(a => {
-      const thumb = a.thumbnail_url
-        ? `<img class="thumb" src="${a.thumbnail_url}" alt="" loading="lazy">`
-        : `<div class="thumb-placeholder"></div>`;
-      return `
-        <a class="card" href="${a.note_url}" target="_blank" rel="noopener">
-          ${thumb}
-          <div class="card-body">
-            <span class="badge">${a.target_name}</span>
-            <p class="card-title">${a.title}</p>
-            <span class="card-date">${a.published_at}</span>
-          </div>
-        </a>`;
-    }).join('');
-    content.innerHTML = `<div class="grid">${cards}</div>`;
-  } else {
-    const rows = items.map(a => {
-      const thumb = a.thumbnail_url
-        ? `<img class="list-thumb" src="${a.thumbnail_url}" alt="" loading="lazy">`
-        : `<div class="list-thumb-placeholder"></div>`;
-      return `
-        <a class="list-item" href="${a.note_url}" target="_blank" rel="noopener">
-          ${thumb}
-          <div class="list-body">
-            <div class="list-title">${a.title}</div>
-            <div class="list-meta">
-              <span class="badge">${a.target_name}</span>
-              <span>${a.published_at}</span>
-            </div>
-          </div>
-          <svg class="list-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-        </a>`;
-    }).join('');
-    content.innerHTML = `<div class="list-view">${rows}</div>`;
-  }
+  grid.innerHTML = items.map((a, i) => {
+    const featured = i === 0 ? 'featured' : '';
+    const img = a.thumbnail_url
+      ? `<img class="card-img" src="${a.thumbnail_url}" alt="" loading="${i < 4 ? 'eager' : 'lazy'}">`
+      : `<div class="card-img-placeholder">📝</div>`;
+    return `
+      <a class="card ${featured}" href="${a.note_url}" target="_blank" rel="noopener">
+        ${img}
+        <div class="card-overlay">
+          <span class="card-badge">${a.target_name}</span>
+          <p class="card-title">${a.title}</p>
+          <span class="card-date">${a.published_at}</span>
+        </div>
+      </a>`;
+  }).join('');
 }
 
 render();
